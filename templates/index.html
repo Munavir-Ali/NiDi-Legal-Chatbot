@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NiDi Legal Dashboard</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f9; }
+        .container { max-width: 1200px; margin: auto; }
+        h1 { color: #333; border-bottom: 2px solid #5d7d9a; padding-bottom: 10px; }
+        .chart-box {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 NiDi </h1>
+
+        <div id="chart-total-cases" class="chart-box"></div>
+
+    </div>
+
+    <script>
+        // Get the Plotly chart data passed from the Flask Python script
+        var graph = {{ graphJSON | safe }};
+
+        // Render the chart in the corresponding div using Plotly.js
+        Plotly.plot('chart-total-cases', graph, {});
+
+    </script>
+</body>
+</html>
