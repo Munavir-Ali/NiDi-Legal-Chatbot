@@ -1,0 +1,2868 @@
+nlu:
+- examples: '- 1
+
+    - 10
+
+    - 100
+
+    - 101
+
+    - 102
+
+    - 103
+
+    - 104
+
+    - 105
+
+    - 105-I
+
+    - 105A
+
+    - 105B
+
+    - 105C
+
+    - 105D
+
+    - 105E
+
+    - 105F
+
+    - 105G
+
+    - 105H
+
+    - 105J
+
+    - 105K
+
+    - 105L
+
+    - 106
+
+    - 107
+
+    - 108
+
+    - 109
+
+    - 11
+
+    - 110
+
+    - 111
+
+    - 112
+
+    - 113
+
+    - 114
+
+    - 115
+
+    - 116
+
+    - 117
+
+    - 118
+
+    - 119
+
+    - 12
+
+    - 120
+
+    - 121
+
+    - 122
+
+    - 123
+
+    - 124
+
+    - 125
+
+    - 126
+
+    - 127
+
+    - 128
+
+    - 129
+
+    - 13
+
+    - 130
+
+    - 131
+
+    - 132
+
+    - 133
+
+    - 134
+
+    - 135
+
+    - 136
+
+    - 137
+
+    - 138
+
+    - 139
+
+    - 14
+
+    - 140
+
+    - 141
+
+    - 142
+
+    - 143
+
+    - 144
+
+    - 145
+
+    - 146
+
+    - 147
+
+    - 148
+
+    - 149
+
+    - 15
+
+    - 150
+
+    - 151
+
+    - 152
+
+    - 153
+
+    - 154
+
+    - 155
+
+    - 156
+
+    - 157
+
+    - 158
+
+    - 159
+
+    - 16
+
+    - 160
+
+    - 161
+
+    - 162
+
+    - 163
+
+    - 164
+
+    - 164A
+
+    - 165
+
+    - 166
+
+    - 166A
+
+    - 166B
+
+    - 167
+
+    - 168
+
+    - 169
+
+    - 17
+
+    - 170
+
+    - 171
+
+    - 172
+
+    - 173
+
+    - 174
+
+    - 175
+
+    - 176
+
+    - 177
+
+    - 178
+
+    - 179
+
+    - 18
+
+    - 180
+
+    - 181
+
+    - 182
+
+    - 183
+
+    - 184
+
+    - 185
+
+    - 186
+
+    - 187
+
+    - 188
+
+    - 189
+
+    - 19
+
+    - 190
+
+    - 191
+
+    - 192
+
+    - 193
+
+    - 194
+
+    - 195
+
+    - 195A
+
+    - 196
+
+    - 197
+
+    - 198
+
+    - 198A
+
+    - 198B
+
+    - 199
+
+    - 2
+
+    - 20
+
+    - 200
+
+    - 201
+
+    - 202
+
+    - 203
+
+    - 204
+
+    - 205
+
+    - 206
+
+    - 207
+
+    - 208
+
+    - 209
+
+    - 21
+
+    - 210
+
+    - 211
+
+    - 212
+
+    - 213
+
+    - 214
+
+    - 215
+
+    - 216
+
+    - 217
+
+    - 218
+
+    - 219
+
+    - 22
+
+    - 220
+
+    - 221
+
+    - 222
+
+    - 223
+
+    - 224
+
+    - 225
+
+    - 226
+
+    - 227
+
+    - 228
+
+    - 229
+
+    - 23
+
+    - 230
+
+    - 231
+
+    - 232
+
+    - 233
+
+    - 234
+
+    - 235
+
+    - 236
+
+    - 237
+
+    - 238
+
+    - 239
+
+    - 24
+
+    - 240
+
+    - 241
+
+    - 242
+
+    - 243
+
+    - 244
+
+    - 245
+
+    - 246
+
+    - 247
+
+    - 248
+
+    - 249
+
+    - 25
+
+    - 250
+
+    - 251
+
+    - 252
+
+    - 253
+
+    - 254
+
+    - 255
+
+    - 256
+
+    - 257
+
+    - 258
+
+    - 259
+
+    - 25A
+
+    - 26
+
+    - 260
+
+    - 261
+
+    - 262
+
+    - 263
+
+    - 264
+
+    - 265
+
+    - 265-I
+
+    - 265A
+
+    - 265B
+
+    - 265C
+
+    - 265D
+
+    - 265E
+
+    - 265F
+
+    - 265G
+
+    - 265H
+
+    - 265J
+
+    - 265K
+
+    - 265L
+
+    - 266
+
+    - 267
+
+    - 268
+
+    - 269
+
+    - 27
+
+    - 270
+
+    - 271
+
+    - 272
+
+    - 273
+
+    - 274
+
+    - 275
+
+    - 276
+
+    - 277
+
+    - 278
+
+    - 279
+
+    - 28
+
+    - 280
+
+    - 281
+
+    - 282
+
+    - 283
+
+    - 284
+
+    - 285
+
+    - 286
+
+    - 287
+
+    - 288
+
+    - 289
+
+    - 29
+
+    - 290
+
+    - 291
+
+    - 291A
+
+    - 292
+
+    - 293
+
+    - 294
+
+    - 295
+
+    - 296
+
+    - 297
+
+    - 298
+
+    - 299
+
+    - 3
+
+    - 30
+
+    - 300
+
+    - 301
+
+    - 302
+
+    - 303
+
+    - 304
+
+    - 305
+
+    - 306
+
+    - 307
+
+    - 308
+
+    - 309
+
+    - 31
+
+    - 310
+
+    - 311
+
+    - 311A
+
+    - 312
+
+    - 313
+
+    - 314
+
+    - 315
+
+    - 316
+
+    - 317
+
+    - 318
+
+    - 319
+
+    - 32
+
+    - 320
+
+    - 321
+
+    - 322
+
+    - 323
+
+    - 324
+
+    - 325
+
+    - 326
+
+    - 327
+
+    - 328
+
+    - 329
+
+    - 33
+
+    - 330
+
+    - 331
+
+    - 332
+
+    - 333
+
+    - 334
+
+    - 335
+
+    - 336
+
+    - 337
+
+    - 338
+
+    - 339
+
+    - 34
+
+    - 340
+
+    - 341
+
+    - 342
+
+    - 343
+
+    - 344
+
+    - 345
+
+    - 346
+
+    - 347
+
+    - 348
+
+    - 349
+
+    - 35
+
+    - 350
+
+    - 351
+
+    - 352
+
+    - 353
+
+    - 354
+
+    - 355
+
+    - 356
+
+    - 357
+
+    - 357A
+
+    - 357B
+
+    - 357C
+
+    - 358
+
+    - 359
+
+    - 36
+
+    - 360
+
+    - 361
+
+    - 362
+
+    - 363
+
+    - 364
+
+    - 365
+
+    - 366
+
+    - 367
+
+    - 368
+
+    - 369
+
+    - 37
+
+    - 370
+
+    - 371
+
+    - 372
+
+    - 373
+
+    - 374
+
+    - 375
+
+    - 376
+
+    - 377
+
+    - 378
+
+    - 379
+
+    - 38
+
+    - 380
+
+    - 381
+
+    - 382
+
+    - 383
+
+    - 384
+
+    - 385
+
+    - 386
+
+    - 387
+
+    - 388
+
+    - 389
+
+    - 39
+
+    - 390
+
+    - 391
+
+    - 392
+
+    - 393
+
+    - 394
+
+    - 395
+
+    - 396
+
+    - 397
+
+    - 398
+
+    - 399
+
+    - 4
+
+    - 40
+
+    - 400
+
+    - 401
+
+    - 402
+
+    - 403
+
+    - 404
+
+    - 405
+
+    - 406
+
+    - 407
+
+    - 408
+
+    - 409
+
+    - 41
+
+    - 410
+
+    - 411
+
+    - 412
+
+    - 413
+
+    - 414
+
+    - 415
+
+    - 416
+
+    - 417
+
+    - 418
+
+    - 419
+
+    - 41A
+
+    - 41B
+
+    - 41C
+
+    - 41D
+
+    - 42
+
+    - 420
+
+    - 421
+
+    - 422
+
+    - 423
+
+    - 424
+
+    - 425
+
+    - 426
+
+    - 427
+
+    - 428
+
+    - 429
+
+    - 43
+
+    - 430
+
+    - 431
+
+    - 432
+
+    - 433
+
+    - 433A
+
+    - 434
+
+    - 435
+
+    - 436
+
+    - 437
+
+    - 437A
+
+    - 438
+
+    - 439
+
+    - 44
+
+    - 440
+
+    - 441
+
+    - 441A
+
+    - 442
+
+    - 443
+
+    - 444
+
+    - 445
+
+    - 446
+
+    - 446A
+
+    - 447
+
+    - 448
+
+    - 449
+
+    - 45
+
+    - 450
+
+    - 451
+
+    - 452
+
+    - 453
+
+    - 454
+
+    - 455
+
+    - 456
+
+    - 457
+
+    - 458
+
+    - 459
+
+    - 46
+
+    - 460
+
+    - 461
+
+    - 462
+
+    - 463
+
+    - 464
+
+    - 465
+
+    - 466
+
+    - 467
+
+    - 468
+
+    - 469
+
+    - 47
+
+    - 470
+
+    - 471
+
+    - 472
+
+    - 473
+
+    - 474
+
+    - 475
+
+    - 476
+
+    - 477
+
+    - 478
+
+    - 479
+
+    - 48
+
+    - 480
+
+    - 481
+
+    - 482
+
+    - 483
+
+    - 484
+
+    - 49
+
+    - 5
+
+    - 50
+
+    - 50A
+
+    - 51
+
+    - 52
+
+    - 53
+
+    - 53A
+
+    - 54
+
+    - 54A
+
+    - 55
+
+    - 55A
+
+    - 56
+
+    - 57
+
+    - 58
+
+    - 59
+
+    - 6
+
+    - 60
+
+    - 60A
+
+    - 61
+
+    - 62
+
+    - 63
+
+    - 64
+
+    - 65
+
+    - 66
+
+    - 67
+
+    - 68
+
+    - 69
+
+    - 7
+
+    - 70
+
+    - 71
+
+    - 72
+
+    - 73
+
+    - 74
+
+    - 75
+
+    - 76
+
+    - 77
+
+    - 78
+
+    - 79
+
+    - 8
+
+    - 80
+
+    - 81
+
+    - 82
+
+    - 83
+
+    - 84
+
+    - 85
+
+    - 86
+
+    - 87
+
+    - 88
+
+    - 89
+
+    - 9
+
+    - 90
+
+    - 91
+
+    - 92
+
+    - 93
+
+    - 94
+
+    - 95
+
+    - 96
+
+    - 97
+
+    - 98
+
+    - 99
+
+    - Article 1 of Indian Constitution
+
+    - Article 10 of Indian Constitution
+
+    - Article 100 of Indian Constitution
+
+    - Article 101 of Indian Constitution
+
+    - Article 102 of Indian Constitution
+
+    - Article 103 of Indian Constitution
+
+    - Article 104 of Indian Constitution
+
+    - Article 105 of Indian Constitution
+
+    - Article 106 of Indian Constitution
+
+    - Article 107 of Indian Constitution
+
+    - Article 108 of Indian Constitution
+
+    - Article 109 of Indian Constitution
+
+    - Article 11 of Indian Constitution
+
+    - Article 110 of Indian Constitution
+
+    - Article 111 of Indian Constitution
+
+    - Article 112 of Indian Constitution
+
+    - Article 113 of Indian Constitution
+
+    - Article 114 of Indian Constitution
+
+    - Article 115 of Indian Constitution
+
+    - Article 116 of Indian Constitution
+
+    - Article 117 of Indian Constitution
+
+    - Article 118 of Indian Constitution
+
+    - Article 119 of Indian Constitution
+
+    - Article 12 of Indian Constitution
+
+    - Article 120 of Indian Constitution
+
+    - Article 121 of Indian Constitution
+
+    - Article 122 of Indian Constitution
+
+    - Article 123 of Indian Constitution
+
+    - Article 124 of Indian Constitution
+
+    - Article 125 of Indian Constitution
+
+    - Article 126 of Indian Constitution
+
+    - Article 127 of Indian Constitution
+
+    - Article 128 of Indian Constitution
+
+    - Article 129 of Indian Constitution
+
+    - Article 13 of Indian Constitution
+
+    - Article 130 of Indian Constitution
+
+    - Article 131 of Indian Constitution
+
+    - Article 132 of Indian Constitution
+
+    - Article 133 of Indian Constitution
+
+    - Article 134 of Indian Constitution
+
+    - Article 134A of Indian Constitution
+
+    - Article 135 of Indian Constitution
+
+    - Article 136 of Indian Constitution
+
+    - Article 137 of Indian Constitution
+
+    - Article 138 of Indian Constitution
+
+    - Article 139 of Indian Constitution
+
+    - Article 139A of Indian Constitution
+
+    - Article 14 of Indian Constitution
+
+    - Article 140 of Indian Constitution
+
+    - Article 141 of Indian Constitution
+
+    - Article 142 of Indian Constitution
+
+    - Article 143 of Indian Constitution
+
+    - Article 144 of Indian Constitution
+
+    - Article 145 of Indian Constitution
+
+    - Article 146 of Indian Constitution
+
+    - Article 147 of Indian Constitution
+
+    - Article 148 of Indian Constitution
+
+    - Article 149 of Indian Constitution
+
+    - Article 15 of Indian Constitution
+
+    - Article 150 of Indian Constitution
+
+    - Article 151 of Indian Constitution
+
+    - Article 152 of Indian Constitution
+
+    - Article 153 of Indian Constitution
+
+    - Article 154 of Indian Constitution
+
+    - Article 155 of Indian Constitution
+
+    - Article 156 of Indian Constitution
+
+    - Article 157 of Indian Constitution
+
+    - Article 158 of Indian Constitution
+
+    - Article 159 of Indian Constitution
+
+    - Article 16 of Indian Constitution
+
+    - Article 160 of Indian Constitution
+
+    - Article 161 of Indian Constitution
+
+    - Article 162 of Indian Constitution
+
+    - Article 163 of Indian Constitution
+
+    - Article 164 of Indian Constitution
+
+    - Article 165 of Indian Constitution
+
+    - Article 166 of Indian Constitution
+
+    - Article 167 of Indian Constitution
+
+    - Article 168 of Indian Constitution
+
+    - Article 169 of Indian Constitution
+
+    - Article 17 of Indian Constitution
+
+    - Article 170 of Indian Constitution
+
+    - Article 171 of Indian Constitution
+
+    - Article 172 of Indian Constitution
+
+    - Article 173 of Indian Constitution
+
+    - Article 174 of Indian Constitution
+
+    - Article 175 of Indian Constitution
+
+    - Article 176 of Indian Constitution
+
+    - Article 177 of Indian Constitution
+
+    - Article 178 of Indian Constitution
+
+    - Article 179 of Indian Constitution
+
+    - Article 18 of Indian Constitution
+
+    - Article 180 of Indian Constitution
+
+    - Article 181 of Indian Constitution
+
+    - Article 182 of Indian Constitution
+
+    - Article 183 of Indian Constitution
+
+    - Article 184 of Indian Constitution
+
+    - Article 185 of Indian Constitution
+
+    - Article 186 of Indian Constitution
+
+    - Article 187 of Indian Constitution
+
+    - Article 188 of Indian Constitution
+
+    - Article 189 of Indian Constitution
+
+    - Article 19 of Indian Constitution
+
+    - Article 190 of Indian Constitution
+
+    - Article 191 of Indian Constitution
+
+    - Article 192 of Indian Constitution
+
+    - Article 193 of Indian Constitution
+
+    - Article 194 of Indian Constitution
+
+    - Article 195 of Indian Constitution
+
+    - Article 196 of Indian Constitution
+
+    - Article 197 of Indian Constitution
+
+    - Article 198 of Indian Constitution
+
+    - Article 199 of Indian Constitution
+
+    - Article 2 of Indian Constitution
+
+    - Article 20 of Indian Constitution
+
+    - Article 200 of Indian Constitution
+
+    - Article 201 of Indian Constitution
+
+    - Article 202 of Indian Constitution
+
+    - Article 203 of Indian Constitution
+
+    - Article 204 of Indian Constitution
+
+    - Article 205 of Indian Constitution
+
+    - Article 206 of Indian Constitution
+
+    - Article 207 of Indian Constitution
+
+    - Article 208 of Indian Constitution
+
+    - Article 209 of Indian Constitution
+
+    - Article 21 of Indian Constitution
+
+    - Article 210 of Indian Constitution
+
+    - Article 211 of Indian Constitution
+
+    - Article 212 of Indian Constitution
+
+    - Article 213 of Indian Constitution
+
+    - Article 214 of Indian Constitution
+
+    - Article 215 of Indian Constitution
+
+    - Article 216 of Indian Constitution
+
+    - Article 217 of Indian Constitution
+
+    - Article 218 of Indian Constitution
+
+    - Article 219 of Indian Constitution
+
+    - Article 22 of Indian Constitution
+
+    - Article 220 of Indian Constitution
+
+    - Article 221 of Indian Constitution
+
+    - Article 222 of Indian Constitution
+
+    - Article 223 of Indian Constitution
+
+    - Article 224 of Indian Constitution
+
+    - Article 224A of Indian Constitution
+
+    - Article 225 of Indian Constitution
+
+    - Article 226 of Indian Constitution
+
+    - Article 226A of Indian Constitution
+
+    - Article 227 of Indian Constitution
+
+    - Article 228 of Indian Constitution
+
+    - Article 228A of Indian Constitution
+
+    - Article 229 of Indian Constitution
+
+    - Article 23 of Indian Constitution
+
+    - Article 230 of Indian Constitution
+
+    - Article 231 of Indian Constitution
+
+    - Article 232 of Indian Constitution
+
+    - Article 233 of Indian Constitution
+
+    - Article 233A of Indian Constitution
+
+    - Article 234 of Indian Constitution
+
+    - Article 235 of Indian Constitution
+
+    - Article 236 of Indian Constitution
+
+    - Article 237 of Indian Constitution
+
+    - Article 238 of Indian Constitution
+
+    - Article 239 of Indian Constitution
+
+    - Article 239A of Indian Constitution
+
+    - Article 239B of Indian Constitution
+
+    - Article 24 of Indian Constitution
+
+    - Article 240 of Indian Constitution
+
+    - Article 241 of Indian Constitution
+
+    - Article 242 of Indian Constitution
+
+    - Article 243 of Indian Constitution
+
+    - Article 243A of Indian Constitution
+
+    - Article 243B of Indian Constitution
+
+    - Article 243C of Indian Constitution
+
+    - Article 243D of Indian Constitution
+
+    - Article 243E of Indian Constitution
+
+    - Article 243F of Indian Constitution
+
+    - Article 243G of Indian Constitution
+
+    - Article 243H of Indian Constitution
+
+    - Article 243I of Indian Constitution
+
+    - Article 243J of Indian Constitution
+
+    - Article 243K of Indian Constitution
+
+    - Article 243L of Indian Constitution
+
+    - Article 243M of Indian Constitution
+
+    - Article 243N of Indian Constitution
+
+    - Article 243O of Indian Constitution
+
+    - Article 243P of Indian Constitution
+
+    - Article 243Q of Indian Constitution
+
+    - Article 243R of Indian Constitution
+
+    - Article 243S of Indian Constitution
+
+    - Article 243T of Indian Constitution
+
+    - Article 243U of Indian Constitution
+
+    - Article 243V of Indian Constitution
+
+    - Article 243W of Indian Constitution
+
+    - Article 243X of Indian Constitution
+
+    - Article 243Y of Indian Constitution
+
+    - Article 243Z of Indian Constitution
+
+    - Article 243ZA of Indian Constitution
+
+    - Article 243ZB of Indian Constitution
+
+    - Article 243ZC of Indian Constitution
+
+    - Article 243ZD of Indian Constitution
+
+    - Article 243ZE of Indian Constitution
+
+    - Article 243ZF of Indian Constitution
+
+    - Article 243ZG of Indian Constitution
+
+    - Article 244 of Indian Constitution
+
+    - Article 244A of Indian Constitution
+
+    - Article 245 of Indian Constitution
+
+    - Article 246 of Indian Constitution
+
+    - Article 247 of Indian Constitution
+
+    - Article 248 of Indian Constitution
+
+    - Article 249 of Indian Constitution
+
+    - Article 25 of Indian Constitution
+
+    - Article 250 of Indian Constitution
+
+    - Article 251 of Indian Constitution
+
+    - Article 252 of Indian Constitution
+
+    - Article 253 of Indian Constitution
+
+    - Article 254 of Indian Constitution
+
+    - Article 255 of Indian Constitution
+
+    - Article 256 of Indian Constitution
+
+    - Article 257 of Indian Constitution
+
+    - Article 257A of Indian Constitution
+
+    - Article 258 of Indian Constitution
+
+    - Article 258A of Indian Constitution
+
+    - Article 259 of Indian Constitution
+
+    - Article 26 of Indian Constitution
+
+    - Article 260 of Indian Constitution
+
+    - Article 261 of Indian Constitution
+
+    - Article 262 of Indian Constitution
+
+    - Article 263 of Indian Constitution
+
+    - Article 264 of Indian Constitution
+
+    - Article 265 of Indian Constitution
+
+    - Article 266 of Indian Constitution
+
+    - Article 267 of Indian Constitution
+
+    - Article 268 of Indian Constitution
+
+    - Article 269 of Indian Constitution
+
+    - Article 27 of Indian Constitution
+
+    - Article 270 of Indian Constitution
+
+    - Article 271 of Indian Constitution
+
+    - Article 272 of Indian Constitution
+
+    - Article 273 of Indian Constitution
+
+    - Article 274 of Indian Constitution
+
+    - Article 275 of Indian Constitution
+
+    - Article 276 of Indian Constitution
+
+    - Article 277 of Indian Constitution
+
+    - Article 278 of Indian Constitution
+
+    - Article 279 of Indian Constitution
+
+    - Article 28 of Indian Constitution
+
+    - Article 280 of Indian Constitution
+
+    - Article 281 of Indian Constitution
+
+    - Article 282 of Indian Constitution
+
+    - Article 283 of Indian Constitution
+
+    - Article 284 of Indian Constitution
+
+    - Article 285 of Indian Constitution
+
+    - Article 286 of Indian Constitution
+
+    - Article 287 of Indian Constitution
+
+    - Article 288 of Indian Constitution
+
+    - Article 289 of Indian Constitution
+
+    - Article 29 of Indian Constitution
+
+    - Article 290 of Indian Constitution
+
+    - Article 290A of Indian Constitution
+
+    - Article 291 of Indian Constitution
+
+    - Article 292 of Indian Constitution
+
+    - Article 293 of Indian Constitution
+
+    - Article 294 of Indian Constitution
+
+    - Article 295 of Indian Constitution
+
+    - Article 296 of Indian Constitution
+
+    - Article 297 of Indian Constitution
+
+    - Article 298 of Indian Constitution
+
+    - Article 299 of Indian Constitution
+
+    - Article 2A of Indian Constitution
+
+    - Article 3 of Indian Constitution
+
+    - Article 30 of Indian Constitution
+
+    - Article 300 of Indian Constitution
+
+    - Article 300A of Indian Constitution
+
+    - Article 301 of Indian Constitution
+
+    - Article 302 of Indian Constitution
+
+    - Article 303 of Indian Constitution
+
+    - Article 304 of Indian Constitution
+
+    - Article 305 of Indian Constitution
+
+    - Article 306 of Indian Constitution
+
+    - Article 307 of Indian Constitution
+
+    - Article 308 of Indian Constitution
+
+    - Article 309 of Indian Constitution
+
+    - Article 310 of Indian Constitution
+
+    - Article 311 of Indian Constitution
+
+    - Article 312 of Indian Constitution
+
+    - Article 312A of Indian Constitution
+
+    - Article 313 of Indian Constitution
+
+    - Article 314 of Indian Constitution
+
+    - Article 315 of Indian Constitution
+
+    - Article 316 of Indian Constitution
+
+    - Article 317 of Indian Constitution
+
+    - Article 318 of Indian Constitution
+
+    - Article 319 of Indian Constitution
+
+    - Article 31A of Indian Constitution
+
+    - Article 31B of Indian Constitution
+
+    - Article 31C of Indian Constitution
+
+    - Article 32 of Indian Constitution
+
+    - Article 320 of Indian Constitution
+
+    - Article 321 of Indian Constitution
+
+    - Article 322 of Indian Constitution
+
+    - Article 323 of Indian Constitution
+
+    - Article 323A of Indian Constitution
+
+    - Article 323B of Indian Constitution
+
+    - Article 324 of Indian Constitution
+
+    - Article 325 of Indian Constitution
+
+    - Article 326 of Indian Constitution
+
+    - Article 327 of Indian Constitution
+
+    - Article 328 of Indian Constitution
+
+    - Article 329 of Indian Constitution
+
+    - Article 329A of Indian Constitution
+
+    - Article 33 of Indian Constitution
+
+    - Article 330 of Indian Constitution
+
+    - Article 331 of Indian Constitution
+
+    - Article 332 of Indian Constitution
+
+    - Article 333 of Indian Constitution
+
+    - Article 334 of Indian Constitution
+
+    - Article 335 of Indian Constitution
+
+    - Article 336 of Indian Constitution
+
+    - Article 337 of Indian Constitution
+
+    - Article 338 of Indian Constitution
+
+    - Article 339 of Indian Constitution
+
+    - Article 34 of Indian Constitution
+
+    - Article 340 of Indian Constitution
+
+    - Article 341 of Indian Constitution
+
+    - Article 342 of Indian Constitution
+
+    - Article 343 of Indian Constitution
+
+    - Article 344 of Indian Constitution
+
+    - Article 345 of Indian Constitution
+
+    - Article 346 of Indian Constitution
+
+    - Article 347 of Indian Constitution
+
+    - Article 348 of Indian Constitution
+
+    - Article 349 of Indian Constitution
+
+    - Article 35 of Indian Constitution
+
+    - Article 350 of Indian Constitution
+
+    - Article 350A of Indian Constitution
+
+    - Article 350B of Indian Constitution
+
+    - Article 351 of Indian Constitution
+
+    - Article 352 of Indian Constitution
+
+    - Article 353 of Indian Constitution
+
+    - Article 354 of Indian Constitution
+
+    - Article 355 of Indian Constitution
+
+    - Article 356 of Indian Constitution
+
+    - Article 357 of Indian Constitution
+
+    - Article 358 of Indian Constitution
+
+    - Article 359 of Indian Constitution
+
+    - Article 36 of Indian Constitution
+
+    - Article 360 of Indian Constitution
+
+    - Article 361 of Indian Constitution
+
+    - Article 361A of Indian Constitution
+
+    - Article 362 of Indian Constitution
+
+    - Article 363 of Indian Constitution
+
+    - Article 363A of Indian Constitution
+
+    - Article 364 of Indian Constitution
+
+    - Article 365 of Indian Constitution
+
+    - Article 366 of Indian Constitution
+
+    - Article 367 of Indian Constitution
+
+    - Article 368 of Indian Constitution
+
+    - Article 369 of Indian Constitution
+
+    - Article 37 of Indian Constitution
+
+    - Article 370 of Indian Constitution
+
+    - Article 371 of Indian Constitution
+
+    - Article 371A of Indian Constitution
+
+    - Article 371B of Indian Constitution
+
+    - Article 371C of Indian Constitution
+
+    - Article 371D of Indian Constitution
+
+    - Article 371E of Indian Constitution
+
+    - Article 371F of Indian Constitution
+
+    - Article 371G of Indian Constitution
+
+    - Article 371H of Indian Constitution
+
+    - Article 371I of Indian Constitution
+
+    - Article 372 of Indian Constitution
+
+    - Article 372A of Indian Constitution
+
+    - Article 373 of Indian Constitution
+
+    - Article 374 of Indian Constitution
+
+    - Article 375 of Indian Constitution
+
+    - Article 376 of Indian Constitution
+
+    - Article 377 of Indian Constitution
+
+    - Article 378 of Indian Constitution
+
+    - Article 378A of Indian Constitution
+
+    - Article 38 of Indian Constitution
+
+    - Article 39 of Indian Constitution
+
+    - Article 392 of Indian Constitution
+
+    - Article 393 of Indian Constitution
+
+    - Article 394 of Indian Constitution
+
+    - Article 395 of Indian Constitution
+
+    - Article 39A of Indian Constitution
+
+    - Article 4 of Indian Constitution
+
+    - Article 40 of Indian Constitution
+
+    - Article 41 of Indian Constitution
+
+    - Article 42 of Indian Constitution
+
+    - Article 43 of Indian Constitution
+
+    - Article 43A of Indian Constitution
+
+    - Article 44 of Indian Constitution
+
+    - Article 45 of Indian Constitution
+
+    - Article 46 of Indian Constitution
+
+    - Article 47 of Indian Constitution
+
+    - Article 48 of Indian Constitution
+
+    - Article 48A of Indian Constitution
+
+    - Article 49 of Indian Constitution
+
+    - Article 5 of Indian Constitution
+
+    - Article 50 of Indian Constitution
+
+    - Article 51 of Indian Constitution
+
+    - Article 51A of Indian Constitution
+
+    - Article 52 of Indian Constitution
+
+    - Article 53 of Indian Constitution
+
+    - Article 54 of Indian Constitution
+
+    - Article 55 of Indian Constitution
+
+    - Article 56 of Indian Constitution
+
+    - Article 57 of Indian Constitution
+
+    - Article 58 of Indian Constitution
+
+    - Article 59 of Indian Constitution
+
+    - Article 6 of Indian Constitution
+
+    - Article 60 of Indian Constitution
+
+    - Article 61 of Indian Constitution
+
+    - Article 62 of Indian Constitution
+
+    - Article 63 of Indian Constitution
+
+    - Article 64 of Indian Constitution
+
+    - Article 65 of Indian Constitution
+
+    - Article 66 of Indian Constitution
+
+    - Article 67 of Indian Constitution
+
+    - Article 68 of Indian Constitution
+
+    - Article 69 of Indian Constitution
+
+    - Article 7 of Indian Constitution
+
+    - Article 70 of Indian Constitution
+
+    - Article 71 of Indian Constitution
+
+    - Article 72 of Indian Constitution
+
+    - Article 73 of Indian Constitution
+
+    - Article 74 of Indian Constitution
+
+    - Article 75 of Indian Constitution
+
+    - Article 76 of Indian Constitution
+
+    - Article 77 of Indian Constitution
+
+    - Article 78 of Indian Constitution
+
+    - Article 79 of Indian Constitution
+
+    - Article 8 of Indian Constitution
+
+    - Article 80 of Indian Constitution
+
+    - Article 81 of Indian Constitution
+
+    - Article 82 of Indian Constitution
+
+    - Article 83 of Indian Constitution
+
+    - Article 84 of Indian Constitution
+
+    - Article 85 of Indian Constitution
+
+    - Article 86 of Indian Constitution
+
+    - Article 87 of Indian Constitution
+
+    - Article 88 of Indian Constitution
+
+    - Article 89 of Indian Constitution
+
+    - Article 9 of Indian Constitution
+
+    - Article 90 of Indian Constitution
+
+    - Article 91 of Indian Constitution
+
+    - Article 92 of Indian Constitution
+
+    - Article 93 of Indian Constitution
+
+    - Article 94 of Indian Constitution
+
+    - Article 95 of Indian Constitution
+
+    - Article 96 of Indian Constitution
+
+    - Article 97 of Indian Constitution
+
+    - Article 98 of Indian Constitution
+
+    - Article 99 of Indian Constitution
+
+    - IPC_121A
+
+    - IPC_122
+
+    - IPC_123
+
+    - IPC_124
+
+    - IPC_124A
+
+    - IPC_125
+
+    - IPC_126
+
+    - IPC_127
+
+    - IPC_128
+
+    - IPC_129
+
+    - IPC_130
+
+    - IPC_131
+
+    - IPC_132
+
+    - IPC_133
+
+    - IPC_134
+
+    - IPC_135
+
+    - IPC_136
+
+    - IPC_137
+
+    - IPC_138
+
+    - IPC_140
+
+    - IPC_145
+
+    - IPC_146
+
+    - IPC_147
+
+    - IPC_148
+
+    - IPC_149
+
+    - IPC_150
+
+    - IPC_151
+
+    - IPC_152
+
+    - IPC_153
+
+    - IPC_153A
+
+    - IPC_153AA
+
+    - IPC_153B
+
+    - IPC_154
+
+    - IPC_155
+
+    - IPC_156
+
+    - IPC_157
+
+    - IPC_158
+
+    - IPC_159
+
+    - IPC_160
+
+    - IPC_161
+
+    - IPC_162
+
+    - IPC_163
+
+    - IPC_164
+
+    - IPC_165
+
+    - IPC_165A
+
+    - IPC_166
+
+    - IPC_166A
+
+    - IPC_166B
+
+    - IPC_167
+
+    - IPC_168
+
+    - IPC_169
+
+    - IPC_170
+
+    - IPC_171
+
+    - IPC_171A
+
+    - IPC_171B
+
+    - IPC_171C
+
+    - IPC_171D
+
+    - IPC_171E
+
+    - IPC_171F
+
+    - IPC_171G
+
+    - IPC_171H
+
+    - IPC_171I
+
+    - IPC_172
+
+    - IPC_173
+
+    - IPC_174
+
+    - IPC_174A
+
+    - IPC_175
+
+    - IPC_176
+
+    - IPC_177
+
+    - IPC_178
+
+    - IPC_179
+
+    - IPC_180
+
+    - IPC_181
+
+    - IPC_182
+
+    - IPC_183
+
+    - IPC_184
+
+    - IPC_185
+
+    - IPC_186
+
+    - IPC_187
+
+    - IPC_188
+
+    - IPC_189
+
+    - IPC_190
+
+    - IPC_191
+
+    - IPC_192
+
+    - IPC_193
+
+    - IPC_194
+
+    - IPC_195
+
+    - IPC_195A
+
+    - IPC_196
+
+    - IPC_197
+
+    - IPC_198
+
+    - IPC_199
+
+    - IPC_200
+
+    - IPC_201
+
+    - IPC_202
+
+    - IPC_203
+
+    - IPC_204
+
+    - IPC_205
+
+    - IPC_206
+
+    - IPC_207
+
+    - IPC_208
+
+    - IPC_209
+
+    - IPC_210
+
+    - IPC_211
+
+    - IPC_212
+
+    - IPC_213
+
+    - IPC_214
+
+    - IPC_215
+
+    - IPC_216
+
+    - IPC_216A
+
+    - IPC_216B
+
+    - IPC_217
+
+    - IPC_218
+
+    - IPC_219
+
+    - IPC_220
+
+    - IPC_221
+
+    - IPC_222
+
+    - IPC_223
+
+    - IPC_224
+
+    - IPC_225
+
+    - IPC_225A
+
+    - IPC_225B
+
+    - IPC_226
+
+    - IPC_227
+
+    - IPC_228
+
+    - IPC_228A
+
+    - IPC_229
+
+    - IPC_229A
+
+    - IPC_230
+
+    - IPC_231
+
+    - IPC_232
+
+    - IPC_233
+
+    - IPC_234
+
+    - IPC_235
+
+    - IPC_236
+
+    - IPC_237
+
+    - IPC_238
+
+    - IPC_239
+
+    - IPC_240
+
+    - IPC_241
+
+    - IPC_242
+
+    - IPC_243
+
+    - IPC_244
+
+    - IPC_245
+
+    - IPC_246
+
+    - IPC_247
+
+    - IPC_248
+
+    - IPC_249
+
+    - IPC_250
+
+    - IPC_251
+
+    - IPC_252
+
+    - IPC_253
+
+    - IPC_254
+
+    - IPC_255
+
+    - IPC_256
+
+    - IPC_257
+
+    - IPC_258
+
+    - IPC_259
+
+    - IPC_260
+
+    - IPC_261
+
+    - IPC_262
+
+    - IPC_263
+
+    - IPC_263A
+
+    - IPC_264
+
+    - IPC_265
+
+    - IPC_266
+
+    - IPC_267
+
+    - IPC_268
+
+    - IPC_269
+
+    - IPC_270
+
+    - IPC_271
+
+    - IPC_272
+
+    - IPC_273
+
+    - IPC_274
+
+    - IPC_275
+
+    - IPC_276
+
+    - IPC_277
+
+    - IPC_278
+
+    - IPC_279
+
+    - IPC_280
+
+    - IPC_281
+
+    - IPC_282
+
+    - IPC_283
+
+    - IPC_284
+
+    - IPC_285
+
+    - IPC_286
+
+    - IPC_287
+
+    - IPC_288
+
+    - IPC_289
+
+    - IPC_290
+
+    - IPC_291
+
+    - IPC_292
+
+    - IPC_293
+
+    - IPC_294
+
+    - IPC_294A
+
+    - IPC_295
+
+    - IPC_295A
+
+    - IPC_296
+
+    - IPC_297
+
+    - IPC_298
+
+    - IPC_299
+
+    - IPC_29A
+
+    - IPC_300
+
+    - IPC_301
+
+    - IPC_302
+
+    - IPC_303
+
+    - IPC_304
+
+    - IPC_304A
+
+    - IPC_304B
+
+    - IPC_305
+
+    - IPC_306
+
+    - IPC_307
+
+    - IPC_308
+
+    - IPC_309
+
+    - IPC_310
+
+    - IPC_311
+
+    - IPC_312
+
+    - IPC_313
+
+    - IPC_314
+
+    - IPC_315
+
+    - IPC_316
+
+    - IPC_317
+
+    - IPC_318
+
+    - IPC_319
+
+    - IPC_320
+
+    - IPC_321
+
+    - IPC_322
+
+    - IPC_323
+
+    - IPC_324
+
+    - IPC_325
+
+    - IPC_326
+
+    - IPC_326A
+
+    - IPC_326B
+
+    - IPC_327
+
+    - IPC_328
+
+    - IPC_329
+
+    - IPC_330
+
+    - IPC_331
+
+    - IPC_332
+
+    - IPC_333
+
+    - IPC_334
+
+    - IPC_335
+
+    - IPC_336
+
+    - IPC_337
+
+    - IPC_338
+
+    - IPC_339
+
+    - IPC_340
+
+    - IPC_341
+
+    - IPC_342
+
+    - IPC_343
+
+    - IPC_344
+
+    - IPC_345
+
+    - IPC_346
+
+    - IPC_347
+
+    - IPC_348
+
+    - IPC_349
+
+    - IPC_350
+
+    - IPC_351
+
+    - IPC_352
+
+    - IPC_353
+
+    - IPC_354
+
+    - IPC_354A
+
+    - IPC_354B
+
+    - IPC_354C
+
+    - IPC_354D
+
+    - IPC_355
+
+    - IPC_356
+
+    - IPC_357
+
+    - IPC_358
+
+    - IPC_359
+
+    - IPC_360
+
+    - IPC_361
+
+    - IPC_362
+
+    - IPC_363
+
+    - IPC_363A
+
+    - IPC_364
+
+    - IPC_364A
+
+    - IPC_365
+
+    - IPC_366
+
+    - IPC_366A
+
+    - IPC_366B
+
+    - IPC_367
+
+    - IPC_368
+
+    - IPC_369
+
+    - IPC_370
+
+    - IPC_370A
+
+    - IPC_371
+
+    - IPC_372
+
+    - IPC_373
+
+    - IPC_374
+
+    - IPC_375
+
+    - IPC_376
+
+    - IPC_376A
+
+    - IPC_376AB
+
+    - IPC_376B
+
+    - IPC_376C
+
+    - IPC_376D
+
+    - IPC_376DA
+
+    - IPC_376DB
+
+    - IPC_376E
+
+    - IPC_377
+
+    - IPC_378
+
+    - IPC_379
+
+    - IPC_380
+
+    - IPC_381
+
+    - IPC_382
+
+    - IPC_383
+
+    - IPC_384
+
+    - IPC_385
+
+    - IPC_386
+
+    - IPC_387
+
+    - IPC_388
+
+    - IPC_389
+
+    - IPC_390
+
+    - IPC_391
+
+    - IPC_392
+
+    - IPC_393
+
+    - IPC_394
+
+    - IPC_395
+
+    - IPC_396
+
+    - IPC_397
+
+    - IPC_398
+
+    - IPC_399
+
+    - IPC_400
+
+    - IPC_401
+
+    - IPC_402
+
+    - IPC_403
+
+    - IPC_404
+
+    - IPC_405
+
+    - IPC_406
+
+    - IPC_407
+
+    - IPC_408
+
+    - IPC_409
+
+    - IPC_410
+
+    - IPC_411
+
+    - IPC_412
+
+    - IPC_413
+
+    - IPC_414
+
+    - IPC_415
+
+    - IPC_416
+
+    - IPC_417
+
+    - IPC_418
+
+    - IPC_419
+
+    - IPC_420
+
+    - IPC_421
+
+    - IPC_422
+
+    - IPC_423
+
+    - IPC_424
+
+    - IPC_425
+
+    - IPC_426
+
+    - IPC_427
+
+    - IPC_428
+
+    - IPC_429
+
+    - IPC_430
+
+    - IPC_431
+
+    - IPC_432
+
+    - IPC_433
+
+    - IPC_434
+
+    - IPC_435
+
+    - IPC_436
+
+    - IPC_437
+
+    - IPC_438
+
+    - IPC_439
+
+    - IPC_440
+
+    - IPC_441
+
+    - IPC_442
+
+    - IPC_443
+
+    - IPC_444
+
+    - IPC_445
+
+    - IPC_446
+
+    - IPC_447
+
+    - IPC_448
+
+    - IPC_449
+
+    - IPC_450
+
+    - IPC_451
+
+    - IPC_452
+
+    - IPC_453
+
+    - IPC_454
+
+    - IPC_455
+
+    - IPC_456
+
+    - IPC_457
+
+    - IPC_458
+
+    - IPC_459
+
+    - IPC_460
+
+    - IPC_461
+
+    - IPC_462
+
+    - IPC_463
+
+    - IPC_464
+
+    - IPC_465
+
+    - IPC_466
+
+    - IPC_467
+
+    - IPC_468
+
+    - IPC_469
+
+    - IPC_470
+
+    - IPC_471
+
+    - IPC_472
+
+    - IPC_473
+
+    - IPC_474
+
+    - IPC_475
+
+    - IPC_476
+
+    - IPC_477
+
+    - IPC_477A
+
+    - IPC_478
+
+    - IPC_479
+
+    - IPC_480
+
+    - IPC_481
+
+    - IPC_482
+
+    - IPC_483
+
+    - IPC_484
+
+    - IPC_485
+
+    - IPC_486
+
+    - IPC_487
+
+    - IPC_488
+
+    - IPC_489
+
+    - IPC_489A
+
+    - IPC_489B
+
+    - IPC_489C
+
+    - IPC_489D
+
+    - IPC_489E
+
+    - IPC_490
+
+    - IPC_491
+
+    - IPC_492
+
+    - IPC_493
+
+    - IPC_494
+
+    - IPC_495
+
+    - IPC_496
+
+    - IPC_497
+
+    - IPC_498
+
+    - IPC_498A
+
+    - IPC_499
+
+    - IPC_500
+
+    - IPC_501
+
+    - IPC_502
+
+    - IPC_503
+
+    - IPC_504
+
+    - IPC_505
+
+    - IPC_506
+
+    - IPC_507
+
+    - IPC_508
+
+    - IPC_509
+
+    - IPC_510
+
+    - IPC_511'
+  lookup: legal_section
+- examples: '- what is [302](legal_section)?
+
+    - explain [Article 21](legal_section)
+
+    - tell me about [Section 140](legal_section)
+
+    - what does [BNS](legal_section) say?'
+  intent: ask_legal_info
+version: '3.1'
