@@ -36,6 +36,7 @@ pipeline:
   threshold: 0.3
   ambiguity_threshold: 0.1
 - name: RegexEntityExtractor
+  use_lookup_tables: True
 
 policies:
 - name: MemoizationPolicy

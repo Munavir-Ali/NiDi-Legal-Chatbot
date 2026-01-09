@@ -1,0 +1,20 @@
+[
+  {
+    "tag_name": "entity",
+    "ids_to_tags": {
+      "1": "B-legal_section",
+      "2": "I-legal_section",
+      "3": "L-legal_section",
+      "4": "U-legal_section",
+      "0": "O"
+    },
+    "tags_to_ids": {
+      "B-legal_section": 1,
+      "I-legal_section": 2,
+      "L-legal_section": 3,
+      "U-legal_section": 4,
+      "O": 0
+    },
+    "num_tags": 5
+  }
+]
