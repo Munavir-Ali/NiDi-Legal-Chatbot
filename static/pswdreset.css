@@ -1,0 +1,144 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, sans-serif;
+}
+
+/* BODY */
+body {
+  background: #f2f4f8;
+  color: #1f2937;
+  min-height: 100vh;
+}
+
+/* NAVBAR */
+.navbar {
+  background: linear-gradient(90deg, #1e3a66, #223f73);
+  padding: 14px 0;
+}
+
+.nav-container {
+  width: 90%;
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.nav-links a {
+  color: #ffffff;
+  text-decoration: none;
+  margin-left: 22px;
+  font-size: 15px;
+}
+
+/* PAGE LAYOUT */
+.page {
+  min-height: calc(100vh - 70px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+/* CARD */
+.card {
+  background: #ffffff;
+  width: 100%;
+  max-width: 420px;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+}
+
+/* TITLE */
+.card h1 {
+  text-align: center;
+  color: #1e3a66;
+  margin-bottom: 25px;
+}
+
+/* FORM */
+label {
+  font-size: 14px;
+  color: #374151;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  border: 1px solid #cfd6e4;
+  border-radius: 5px;
+  padding: 0 12px;
+  margin-bottom: 20px;
+  background: #fff;
+}
+
+.icon {
+  margin-right: 8px;
+  color: #7b8bb0;
+}
+
+.input-group input {
+  border: none;
+  outline: none;
+  width: 100%;
+  padding: 12px 0;
+  font-size: 15px;
+}
+
+/* BUTTON */
+.btn {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(90deg, #1e3a66, #2a5aa8);
+  border: none;
+  border-radius: 5px;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+/* DIVIDER */
+.divider {
+  height: 1px;
+  background: #dbe1ec;
+  margin: 22px 0;
+}
+
+/* FOOTER */
+.footer-text {
+  text-align: center;
+  font-size: 14px;
+}
+
+.footer-text a {
+  color: #2a5aa8;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .card {
+    padding: 30px 20px;
+  }
+
+  .nav-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+}

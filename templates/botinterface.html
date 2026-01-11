@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chat | NIDI LawBot</title>
+  <link rel="stylesheet" href="static/botinterface.css" />
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="logo">⚖️ NIDI LawBot</div>
+      <nav class="nav-links">
+         <a href="/about">About</a>
+        <a href="/login">Login</a>
+        <a href="/signup">Sign Up</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="chat-wrapper">
+
+    <div class="chat-box" id="chat-box">
+      <div class="message-row left">
+        <div class="avatar bot">🤖</div>
+        <div class="message">
+          Hello! I am NiDi. Which Section or Article can I help you with today?
+        </div>
+      </div>
+    </div>
+
+    <div class="chat-input">
+      <input type="text" id="user-input" placeholder="Type your message..." onkeypress="handleKeyPress(event)" />
+      <button onclick="sendMessage()">➤</button>
+    </div>
+
+  </main>
+
+  <script>
+    async function sendMessage() {
+        const input = document.getElementById('user-input');
+        const chatBox = document.getElementById('chat-box');
+        const message = input.value.trim();
+
+        if (!message) return;
+
+        chatBox.innerHTML += `
+            <div class="message-row right">
+                <div class="message">${message}</div>
+                <div class="avatar user">👤</div>
+            </div>
+        `;
+
+        input.value = '';
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        try {
+            const response = await fetch('http://localhost:5005/webhooks/rest/webhook', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ sender: "user", message: message })
+            });
+
+            const data = await response.json();
+
+            data.forEach(res => {
+                chatBox.innerHTML += `
+                    <div class="message-row left">
+                        <div class="avatar bot">🤖</div>
+                        <div class="message">${res.text}</div>
+                    </div>
+                `;
+            });
+
+            chatBox.scrollTop = chatBox.scrollHeight;
+        } catch (error) {
+            console.error("Error:", error);
+            chatBox.innerHTML += `
+                <div class="message-row left">
+                    <div class="avatar bot">🤖</div>
+                    <div class="message">Sorry, I'm having trouble connecting to the server.</div>
+                </div>
+            `;
+        }
+    }
+
+    function handleKeyPress(event) {
+        if (event.key === 'Enter') {
+            sendMessage();
+        }
+    }
+  </script>
+
+</body>
+</html>
