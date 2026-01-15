@@ -28,6 +28,7 @@ body {
   color: #ffffff;
   font-weight: 600;
   font-size: 18px;
+  text-decoration: none;
 }
 
 .nav-links a {
@@ -129,5 +130,57 @@ body {
 
   .hero h1 {
     font-size: 24px;
+  }
+}
+
+/* Base styles for the Hamburger (hidden on desktop) */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 5px;
+  z-index: 1001;
+}
+
+.bar {
+  width: 25px;
+  height: 3px;
+  background-color: #ffffff;
+}
+
+@media (max-width: 600px) {
+  .nav-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    position: relative;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 50px;
+    right: 0;
+    width: 100%;
+    background-color: #1e3a66;
+    text-align: center;
+    padding: 20px 0;
+    z-index: 1000;
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  .nav-links a {
+    margin: 15px 0;
+    margin-left: 0;
   }
 }

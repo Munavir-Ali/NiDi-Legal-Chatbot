@@ -36,49 +36,69 @@ class ActionGetLegalDescription(Action):
 
         target_files = []
         if 'IPC' in user_msg:
-            target_files = [all_files['IPC']]
+            target_files = [('IPC', all_files['IPC'])]
         elif 'BNS' in user_msg:
-            target_files = [all_files['BNS']]
+            target_files = [('BNS', all_files['BNS'])]
         elif 'BSA' in user_msg:
-            target_files = [all_files['BSA']]
+            target_files = [('BSA', all_files['BSA'])]
         elif 'CRPC' in user_msg:
-            target_files = [all_files['CRPC']]
+            target_files = [('CRPC', all_files['CRPC'])]
         elif any(x in user_msg for x in ['IC', 'CONSTITUTION', 'ARTICLE']):
-            target_files = [all_files['IC']]
+            target_files = [('CONSTITUTION', all_files['IC'])]
         else:
-            target_files = ['bns_sections.xlsx', 'bsa_sections.xlsx', 'Final_IC.xlsx', 'ipc_sections.xlsx',
-                            'crpc_sections.xlsx']
+            target_files = [
+                ('BNS', 'bns_sections.xlsx'),
+                ('BSA', 'bsa_sections.xlsx'),
+                ('CONSTITUTION', 'Final_IC.xlsx'),
+                ('IPC', 'ipc_sections.xlsx'),
+                ('CRPC', 'crpc_sections.xlsx')
+            ]
 
-        found_text = None
-        matched_label = ""
-
-        for file_name in target_files:
+        matches = []
+        for label, file_name in target_files:
             path = os.path.join(data_path, file_name)
             if not os.path.exists(path):
                 continue
 
             try:
                 df = pd.read_excel(path)
+
                 if "Final_IC" in file_name:
-                    id_col, desc_col, label = 'article_id', 'article_desc', "Constitution"
+                    id_col, desc_col = 'article_id', 'article_desc'
+                elif "ipc_sections" in file_name:
+                    id_col, desc_col = 'Section', 'Description'
                 else:
                     id_col = 'Section' if 'Section' in df.columns else 'Section _name'
-                    desc_col, label = 'Description', file_name.split('_')[0].upper()
+                    desc_col = 'Description'
 
                 df[id_col] = df[id_col].astype(str).str.strip().str.lower()
+
+                if "ipc_sections" in file_name:
+                    df[id_col] = df[id_col].str.replace('ipc_', '', regex=False)
+                elif "Final_IC" in file_name:
+                    df[id_col] = df[id_col].str.replace('article ', '', regex=False).str.replace(
+                        ' of indian constitution', '', regex=False)
+
                 result = df[df[id_col] == clean_query]
 
                 if not result.empty:
-                    found_text = result.iloc[0][desc_col]
-                    matched_label = label
-                    break
+                    matches.append({
+                        "label": label,
+                        "text": result.iloc[0][desc_col]
+                    })
             except Exception as e:
-                print(f"Error: {e}")
+                print(f"Error processing {file_name}: {e}")
 
-        if found_text:
-            dispatcher.utter_message(text=f"⚖️ **{matched_label} - {legal_section_raw.title()}**:\n\n{found_text}")
-        else:
+        if not matches:
             dispatcher.utter_message(text=f"No details found for {legal_section_raw}.")
+        elif len(matches) == 1:
+            dispatcher.utter_message(
+                text=f"⚖️ **{matches[0]['label']} - {legal_section_raw.upper()}**:\n\n{matches[0]['text']}")
+        else:
+            options = ", ".join([m['label'] for m in matches])
+            dispatcher.utter_message(
+                text=f"I found Section {clean_query} in multiple acts: {options}. Which one did you mean?")
+            dispatcher.utter_message(text=f"Displaying **{matches[0]['label']}** result:\n\n{matches[0]['text']}")
 
         return []
 
