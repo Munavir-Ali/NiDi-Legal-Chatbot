@@ -10,30 +10,29 @@
 <body>
 
   <header class="navbar">
-  <div class="nav-container">
-    <a href="{{ url_for('home') }}" class="logo">⚖️ NiDi</a>
+    <div class="nav-container">
+      <a href="{{ url_for('home') }}" class="logo">⚖️ NiDi</a>
 
-    <div class="hamburger" id="hamburger">
-      <span class="bar"></span>
-      <span class="bar"></span>
-      <span class="bar"></span>
+      <div class="hamburger" id="hamburger">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </div>
+
+      <nav class="nav-links" id="nav-menu">
+        <a href="/about">About</a>
+        <a href="/login">Login</a>
+        <a href="/signup">Sign Up</a>
+      </nav>
     </div>
-
-    <nav class="nav-links" id="nav-menu">
-      <a href="/about">About</a>
-      <a href="/login">Login</a>
-      <a href="/signup">Sign Up</a>
-    </nav>
-  </div>
-</header>
+  </header>
 
   <main class="main">
-
-    <section class="stats-carousel" style="padding: 10px; background: #eef1f6; display: flex; flex-direction: column; align-items: center; border-bottom: 1px solid #dbe1ec;">
-        <div style="display: flex; align-items: center; width: 90%; gap: 15px; justify-content: center;">
-            <div style="font-size: 30px; color: #1e3a66; cursor: pointer; user-select: none;" onclick="changeChart(-1)">◀</div>
-            <div id="chart" style="width: 80%; height: 300px; background: #ffffff; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);"></div>
-            <div style="font-size: 30px; color: #1e3a66; cursor: pointer; user-select: none;" onclick="changeChart(1)">▶</div>
+    <section class="stats-carousel">
+        <div class="carousel-wrapper">
+            <div class="arrow" onclick="changeChart(-1)">◀</div>
+            <div id="chart"></div>
+            <div class="arrow" onclick="changeChart(1)">▶</div>
         </div>
     </section>
 
@@ -74,7 +73,15 @@
     function renderCurrentChart() {
         if (allCharts.length > 0) {
             var currentGraph = allCharts[currentIndex];
-            Plotly.newPlot('chart', currentGraph.data, currentGraph.layout, {
+            // Applying the palette to Plotly layout
+            var layout = {
+                ...currentGraph.layout,
+                paper_bgcolor: '#DAFFFB',
+                plot_bgcolor: '#DAFFFB',
+                font: { color: '#001C30' },
+                margin: { t: 40, b: 40, l: 40, r: 40 }
+            };
+            Plotly.newPlot('chart', currentGraph.data, layout, {
                 responsive: true,
                 displayModeBar: false
             });
@@ -88,18 +95,15 @@
 
     window.onload = renderCurrentChart;
 
-
     document.addEventListener('DOMContentLoaded', () => {
-    const hamburger = document.getElementById('hamburger');
-    const navMenu = document.getElementById('nav-menu');
-
-    if (hamburger && navMenu) {
-        hamburger.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
-        });
-    }
-});
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('nav-menu');
+        if (hamburger && navMenu) {
+            hamburger.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+            });
+        }
+    });
   </script>
-
 </body>
 </html>

@@ -989,5 +989,11 @@ nlu:
     - show me [BSA section 1](legal_section)
     - [Article 14](legal_section)
     - [Section 498A](legal_section)
+    - [498A](legal_section)
+    - [IPC 124A](legal_section)
+    - [124A](legal_section)
     - explain [BNS 103](legal_section)
     - what is [IPC 124A](legal_section)?
+    - I want to know about [Section 498A](legal_section)
+    - I want to know about [498A](legal_section)
+    - tell me about [IPC 124A](legal_section)

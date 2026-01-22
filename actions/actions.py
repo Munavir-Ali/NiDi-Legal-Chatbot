@@ -5,7 +5,6 @@ import pandas as pd
 import os
 import re
 
-
 class ActionGetLegalDescription(Action):
     def name(self) -> Text:
         return "action_get_legal_description"
@@ -89,11 +88,13 @@ class ActionGetLegalDescription(Action):
             except Exception as e:
                 print(f"Error processing {file_name}: {e}")
 
+        display_section = re.sub(r'(?i)ipc|bns|bsa|crpc|article|section', '', legal_section_raw).strip().upper()
+
         if not matches:
             dispatcher.utter_message(text=f"No details found for {legal_section_raw}.")
         elif len(matches) == 1:
             dispatcher.utter_message(
-                text=f"⚖️ **{matches[0]['label']} - {legal_section_raw.upper()}**:\n\n{matches[0]['text']}")
+                text=f"⚖️ **{matches[0]['label']} - {display_section}**:\n\n{matches[0]['text']}")
         else:
             options = ", ".join([m['label'] for m in matches])
             dispatcher.utter_message(

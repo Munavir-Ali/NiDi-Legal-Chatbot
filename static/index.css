@@ -6,13 +6,16 @@
 }
 
 body {
-  background: #f2f4f8;
-  color: #1f2937;
+  background: #DAFFFB;
+  color: #001C30;
 }
 
 .navbar {
-  background: linear-gradient(90deg, #1e3a66, #223f73);
+  background: #001C30;
   padding: 14px 0;
+  position: sticky;
+  top: 0;
+  z-index: 2000;
 }
 
 .nav-container {
@@ -25,42 +28,94 @@ body {
 }
 
 .logo {
-  color: #ffffff;
+  color: #64CCC5;
   font-weight: 600;
   font-size: 18px;
   text-decoration: none;
 }
 
 .nav-links a {
-  color: #ffffff;
+  color: #DAFFFB;
   text-decoration: none;
   margin-left: 22px;
   font-size: 15px;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover {
+  color: #64CCC5;
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 5px;
+}
+
+.bar {
+  width: 25px;
+  height: 3px;
+  background-color: #64CCC5;
 }
 
 .main {
-  background: #eef1f6;
-  margin: 20px auto;
+  background: #DAFFFB;
+  margin: 0 auto;
   max-width: 1200px;
+}
+
+.stats-carousel {
+  margin-top: 25px;
+  padding: 20px;
+  background: #176B87;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 12px;
+  border-bottom: 1px solid #64CCC5;
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.carousel-wrapper {
+  display: flex;
+  align-items: center;
+  width: 90%;
+  gap: 15px;
+  justify-content: center;
+}
+
+.arrow {
+  font-size: 30px;
+  color: #DAFFFB;
+  cursor: pointer;
+  user-select: none;
+}
+
+#chart {
+  width: 80%;
+  height: 280px;
+  background: #DAFFFB;
   border-radius: 8px;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
-  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .hero {
   text-align: center;
-  padding: 80px 20px 60px;
+  padding: 40px 20px;
 }
 
 .hero h1 {
   font-size: 32px;
-  color: #1e3a66;
+  color: #001C30;
   margin-bottom: 12px;
 }
 
 .hero p {
   font-size: 16px;
-  color: #4b5563;
+  color: #176B87;
   margin-bottom: 28px;
 }
 
@@ -69,13 +124,19 @@ body {
   font-size: 16px;
   font-weight: 600;
   color: #ffffff;
-  background: #2a5aa8;
+  background: #176B87;
   border: none;
   border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.cta-btn:hover {
+  background: #001C30;
 }
 
 .features {
-  background: #f7f9fc;
+  background: #DAFFFB;
   padding: 50px 30px;
   display: flex;
   gap: 25px;
@@ -89,16 +150,17 @@ body {
   border-radius: 6px;
   text-align: center;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  border-bottom: 4px solid #64CCC5;
 }
 
 .feature-card .icon {
   font-size: 34px;
-  color: #1e3a66;
+  color: #001C30;
   margin-bottom: 12px;
 }
 
 .feature-card h3 {
-  color: #1e3a66;
+  color: #001C30;
   margin-bottom: 10px;
 }
 
@@ -107,57 +169,15 @@ body {
   margin: 0 auto 12px;
   border: none;
   height: 1px;
-  background: #dbe1ec;
+  background: #64CCC5;
 }
 
 .feature-card p {
   font-size: 14.5px;
-  color: #4b5563;
+  color: #176B87;
 }
 
-@media (max-width: 900px) {
-  .features {
-    flex-direction: column;
-    align-items: center;
-  }
-}
-
-@media (max-width: 600px) {
-  .nav-container {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .hero h1 {
-    font-size: 24px;
-  }
-}
-
-/* Base styles for the Hamburger (hidden on desktop) */
-.hamburger {
-  display: none;
-  flex-direction: column;
-  cursor: pointer;
-  gap: 5px;
-  z-index: 1001;
-}
-
-.bar {
-  width: 25px;
-  height: 3px;
-  background-color: #ffffff;
-}
-
-@media (max-width: 600px) {
-  .nav-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    width: 90%;
-    position: relative;
-  }
-
+@media (max-width: 768px) {
   .hamburger {
     display: flex;
   }
@@ -165,11 +185,11 @@ body {
   .nav-links {
     display: none;
     flex-direction: column;
+    width: 100%;
     position: absolute;
     top: 50px;
     right: 0;
-    width: 100%;
-    background-color: #1e3a66;
+    background: #001C30;
     text-align: center;
     padding: 20px 0;
     z-index: 1000;
@@ -180,7 +200,16 @@ body {
   }
 
   .nav-links a {
-    margin: 15px 0;
+    margin: 10px 0;
     margin-left: 0;
+  }
+
+  .features {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #chart {
+    width: 95%;
   }
 }

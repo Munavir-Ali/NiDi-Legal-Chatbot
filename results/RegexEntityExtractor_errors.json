@@ -1,0 +1,478 @@
+[
+  {
+    "text": "explain Article 21",
+    "entities": [
+      {
+        "start": 8,
+        "end": 18,
+        "value": "Article 21",
+        "entity": "legal_section"
+      }
+    ],
+    "predicted_entities": [
+      {
+        "entity": "legal_section",
+        "start": 8,
+        "end": 18,
+        "confidence_entity": 0.9681158065795898,
+        "value": "Article 21",
+        "extractor": "DIETClassifier",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      },
+      {
+        "entity": "legal_section",
+        "start": 16,
+        "end": 18,
+        "value": "21",
+        "extractor": "RegexEntityExtractor"
+      }
+    ]
+  },
+  {
+    "text": "tell me about Section 140",
+    "entities": [
+      {
+        "start": 14,
+        "end": 25,
+        "value": "Section 140",
+        "entity": "legal_section"
+      }
+    ],
+    "predicted_entities": [
+      {
+        "entity": "legal_section",
+        "start": 14,
+        "end": 25,
+        "confidence_entity": 0.9642318487167358,
+        "value": "Section 140",
+        "extractor": "DIETClassifier",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      },
+      {
+        "entity": "legal_section",
+        "start": 22,
+        "end": 25,
+        "value": "140",
+        "extractor": "RegexEntityExtractor"
+      }
+    ]
+  },
+  {
+    "text": "what is IPC 302?",
+    "entities": [
+      {
+        "start": 8,
+        "end": 15,
+        "value": "IPC 302",
+        "entity": "legal_section"
+      }
+    ],
+    "predicted_entities": [
+      {
+        "entity": "legal_section",
+        "start": 8,
+        "end": 15,
+        "confidence_entity": 0.9677754640579224,
+        "value": "IPC 302",
+        "extractor": "DIETClassifier",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      },
+      {
+        "entity": "legal_section",
+        "start": 12,
+        "end": 15,
+        "value": "302",
+        "extractor": "RegexEntityExtractor"
+      }
+    ]
+  },
+  {
+    "text": "tell me about section 376 of IPC",
+    "entities": [
+      {
+        "start": 14,
+        "end": 32,
+        "value": "section 376 of IPC",
+        "entity": "legal_section"
+      }
+    ],
+    "predicted_entities": [
+      {
+        "entity": "legal_section",
+        "start": 14,
+        "end": 32,
+        "confidence_entity": 0.7540252208709717,
+        "value": "section 376 of IPC",
+        "extractor": "DIETClassifier",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      },
+      {
+        "entity": "legal_section",
+        "start": 22,
+        "end": 25,
+        "value": "376",
+        "extractor": "RegexEntityExtractor"
+      }
+    ]
+  },
+  {
+    "text": "what does BNS 302 say?",
+    "entities": [
+      {
+        "start": 10,
+        "end": 17,
+        "value": "BNS 302",
+        "entity": "legal_section"
+      }
+    ],
+    "predicted_entities": [
+      {
+        "entity": "legal_section",
+        "start": 10,
+        "end": 17,
+        "confidence_entity": 0.7321577668190002,
+        "value": "BNS 302",
+        "extractor": "DIETClassifier",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      },
+      {
+        "entity": "legal_section",
+        "start": 14,
+        "end": 17,
+        "value": "302",
+        "extractor": "RegexEntityExtractor"
+      }
+    ]
+  },
+  {
+    "text": "what is section 365 in CRPC?",
+    "entities": [
+      {
+        "start": 8,
+        "end": 27,
+        "value": "section 365 in CRPC",
+        "entity": "legal_section"
+      }
+    ],
+    "predicted_entities": [
+      {
+        "entity": "legal_section",
+        "start": 8,
+        "end": 27,
+        "confidence_entity": 0.7348858714103699,
+        "value": "section 365 in CRPC",
+        "extractor": "DIETClassifier",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      },
+      {
+        "entity": "legal_section",
+        "start": 16,
+        "end": 19,
+        "value": "365",
+        "extractor": "RegexEntityExtractor"
+      }
+    ]
+  },
+  {
+    "text": "show me BSA section 1",
+    "entities": [
+      {
+        "start": 8,
+        "end": 21,
+        "value": "BSA section 1",
+        "entity": "legal_section"
+      }
+    ],
+    "predicted_entities": [
+      {
+        "entity": "legal_section",
+        "start": 8,
+        "end": 11,
+        "confidence_entity": 0.9969754219055176,
+        "value": "BSA",
+        "extractor": "DIETClassifier"
+      },
+      {
+        "entity": "legal_section",
+        "start": 12,
+        "end": 21,
+        "confidence_entity": 0.5968843102455139,
+        "value": "section 1",
+        "extractor": "DIETClassifier"
+      },
+      {
+        "entity": "legal_section",
+        "start": 20,
+        "end": 21,
+        "value": "1",
+        "extractor": "RegexEntityExtractor"
+      }
+    ]
+  },
+  {
+    "text": "Article 14",
+    "entities": [
+      {
+        "start": 0,
+        "end": 10,
+        "value": "Article 14",
+        "entity": "legal_section"
+      }
+    ],
+    "predicted_entities": [
+      {
+        "entity": "legal_section",
+        "start": 0,
+        "end": 10,
+        "confidence_entity": 0.9613569974899292,
+        "value": "Article 14",
+        "extractor": "DIETClassifier",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      },
+      {
+        "entity": "legal_section",
+        "start": 8,
+        "end": 10,
+        "value": "14",
+        "extractor": "RegexEntityExtractor"
+      }
+    ]
+  },
+  {
+    "text": "Section 498A",
+    "entities": [
+      {
+        "start": 0,
+        "end": 12,
+        "value": "Section 498A",
+        "entity": "legal_section"
+      }
+    ],
+    "predicted_entities": [
+      {
+        "entity": "legal_section",
+        "start": 0,
+        "end": 12,
+        "confidence_entity": 0.9299356341362,
+        "value": "Section 498A",
+        "extractor": "DIETClassifier",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      }
+    ]
+  },
+  {
+    "text": "498A",
+    "entities": [
+      {
+        "start": 0,
+        "end": 4,
+        "value": "498A",
+        "entity": "legal_section"
+      }
+    ],
+    "predicted_entities": [
+      {
+        "entity": "legal_section",
+        "start": 0,
+        "end": 4,
+        "confidence_entity": 0.9884756803512573,
+        "value": "498A",
+        "extractor": "DIETClassifier",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      }
+    ]
+  },
+  {
+    "text": "IPC 124A",
+    "entities": [
+      {
+        "start": 0,
+        "end": 8,
+        "value": "IPC 124A",
+        "entity": "legal_section"
+      }
+    ],
+    "predicted_entities": [
+      {
+        "entity": "legal_section",
+        "start": 0,
+        "end": 8,
+        "confidence_entity": 0.9846253395080566,
+        "value": "IPC 124A",
+        "extractor": "DIETClassifier",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      }
+    ]
+  },
+  {
+    "text": "124A",
+    "entities": [
+      {
+        "start": 0,
+        "end": 4,
+        "value": "124A",
+        "entity": "legal_section"
+      }
+    ],
+    "predicted_entities": [
+      {
+        "entity": "legal_section",
+        "start": 0,
+        "end": 4,
+        "confidence_entity": 0.9656890034675598,
+        "value": "124A",
+        "extractor": "DIETClassifier",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      }
+    ]
+  },
+  {
+    "text": "explain BNS 103",
+    "entities": [
+      {
+        "start": 8,
+        "end": 15,
+        "value": "BNS 103",
+        "entity": "legal_section"
+      }
+    ],
+    "predicted_entities": [
+      {
+        "entity": "legal_section",
+        "start": 8,
+        "end": 15,
+        "confidence_entity": 0.970384955406189,
+        "value": "BNS 103",
+        "extractor": "DIETClassifier",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      },
+      {
+        "entity": "legal_section",
+        "start": 12,
+        "end": 15,
+        "value": "103",
+        "extractor": "RegexEntityExtractor"
+      }
+    ]
+  },
+  {
+    "text": "what is IPC 124A?",
+    "entities": [
+      {
+        "start": 8,
+        "end": 16,
+        "value": "IPC 124A",
+        "entity": "legal_section"
+      }
+    ],
+    "predicted_entities": [
+      {
+        "entity": "legal_section",
+        "start": 8,
+        "end": 16,
+        "confidence_entity": 0.9938259720802307,
+        "value": "IPC 124A",
+        "extractor": "DIETClassifier",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      }
+    ]
+  },
+  {
+    "text": "I want to know about Section 498A",
+    "entities": [
+      {
+        "start": 21,
+        "end": 33,
+        "value": "Section 498A",
+        "entity": "legal_section"
+      }
+    ],
+    "predicted_entities": [
+      {
+        "entity": "legal_section",
+        "start": 21,
+        "end": 33,
+        "confidence_entity": 0.9488213062286377,
+        "value": "Section 498A",
+        "extractor": "DIETClassifier",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      }
+    ]
+  },
+  {
+    "text": "I want to know about 498A",
+    "entities": [
+      {
+        "start": 21,
+        "end": 25,
+        "value": "498A",
+        "entity": "legal_section"
+      }
+    ],
+    "predicted_entities": [
+      {
+        "entity": "legal_section",
+        "start": 21,
+        "end": 25,
+        "confidence_entity": 0.9485447406768799,
+        "value": "498A",
+        "extractor": "DIETClassifier",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      }
+    ]
+  },
+  {
+    "text": "tell me about IPC 124A",
+    "entities": [
+      {
+        "start": 14,
+        "end": 22,
+        "value": "IPC 124A",
+        "entity": "legal_section"
+      }
+    ],
+    "predicted_entities": [
+      {
+        "entity": "legal_section",
+        "start": 14,
+        "end": 22,
+        "confidence_entity": 0.9946010112762451,
+        "value": "IPC 124A",
+        "extractor": "DIETClassifier",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      }
+    ]
+  }
+]

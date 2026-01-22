@@ -10,8 +10,15 @@
 
   <header class="navbar">
     <div class="nav-container">
-      <a href="{{ url_for('home') }}" class="logo" style="text-decoration: none;">⚖️NiDi</a>
-      <nav class="nav-links">
+      <a href="{{ url_for('home') }}" class="logo">⚖️ NiDi</a>
+
+      <div class="hamburger" id="hamburger">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </div>
+
+      <nav class="nav-links" id="nav-menu">
         <a href="/about">About</a>
         <a href="/login">Login</a>
         <a href="/signup">Sign Up</a>
@@ -20,7 +27,6 @@
   </header>
 
   <main class="chat-wrapper">
-
     <div class="chat-box" id="chat-box">
       <div class="message-row left">
         <div class="avatar bot">🤖</div>
@@ -34,10 +40,20 @@
       <input type="text" id="user-input" placeholder="Type your message..." onkeypress="handleKeyPress(event)" />
       <button onclick="sendMessage()">➤</button>
     </div>
-
   </main>
 
   <script>
+    // Navigation Toggle
+    document.addEventListener('DOMContentLoaded', () => {
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('nav-menu');
+        if (hamburger && navMenu) {
+            hamburger.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+            });
+        }
+    });
+
     async function sendMessage() {
         const input = document.getElementById('user-input');
         const chatBox = document.getElementById('chat-box');
@@ -56,7 +72,7 @@
         chatBox.scrollTop = chatBox.scrollHeight;
 
         try {
-            const response = await fetch('http://172.20.28.214:5005/webhooks/rest/webhook', {
+            const response = await fetch('http://10.195.17.130:5005/webhooks/rest/webhook', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ sender: "user", message: message })
@@ -84,6 +100,7 @@
             `;
         }
     }
+
     function handleKeyPress(event) {
         if (event.key === 'Enter') {
             sendMessage();
