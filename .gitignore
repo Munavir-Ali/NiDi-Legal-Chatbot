@@ -1,0 +1,19 @@
+# Secrets and Environment Variables
+.env
+
+# Rasa Cache and Models
+.rasa/
+models/
+*.tar.gz
+
+# Python-specific
+__pycache__/
+*.pyc
+nidi_env/
+
+# IDE Settings
+.idea/
+.vscode/
+
+# Local database (if any)
+*.db

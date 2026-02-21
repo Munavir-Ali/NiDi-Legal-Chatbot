@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NiDi</title>
-  <link rel="stylesheet" href="/static/index.css" />
+  <title>NiDi | Legal Assistant</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}" />
   <script src="https://cdn.plot.ly/plotly-2.35.3.min.js"></script>
 </head>
 <body>
@@ -21,8 +21,13 @@
 
       <nav class="nav-links" id="nav-menu">
         <a href="/about">About</a>
-        <a href="/login">Login</a>
-        <a href="/signup">Sign Up</a>
+        {% if current_user.is_authenticated %}
+          <a href="/chat">Chat</a>
+          <a href="/logout">Logout</a>
+          <img src="{{ current_user.picture }}" alt="Profile" style="width:30px; border-radius:50%; margin-left:10px; vertical-align:middle; border: 1px solid #64CCC5;">
+        {% else %}
+          <a href="/signin">Sign In</a>
+        {% endif %}
       </nav>
     </div>
   </header>
@@ -38,30 +43,36 @@
 
     <section class="hero">
       <h1>Your Legal Assistant, Powered by AI.</h1>
-      <p>Get instant legal guidance and information.</p>
-      <button class="cta-btn" onclick="window.location.href='/chat'">
-        Start Chat
-      </button>
+      <p>Access BNS, BSA, and the Indian Constitution in simple language.</p>
+
+        <div class="hero-btns">
+            {% if current_user.is_authenticated %}
+            <button class="cta-btn" onclick="window.location.href='/chat'">Go to Chat</button>
+            {% else %}
+            <button class="cta-btn" onclick="window.location.href='/signin'">Get Started</button>
+            {% endif %}
+            <button class="cta-btn" style="background: #e63946; margin-left: 10px;" onclick="window.location.href='/emergency-locator'">🚨 Emergency Locator</button>
+        </div>
     </section>
 
     <section class="features">
         <div class="feature-card">
             <div class="icon">⚖️</div>
-            <h3>Legal Advice</h3>
+            <h3>Legal Guidance</h3>
             <hr />
-            <p>Get answers to your legal questions.</p>
+            <p>Direct search from official Adhiniyam datasets.</p>
         </div>
         <div class="feature-card">
             <div class="icon">🛡️</div>
-            <h3>Confidential & Secure</h3>
+            <h3>Multilingual</h3>
             <hr />
-            <p>Your privacy is our priority.</p>
+            <p>Available in English, Hindi, and Malayalam.</p>
         </div>
         <div class="feature-card">
             <div class="icon">⏰</div>
-            <h3>Available 24/7</h3>
+            <h3>Emergency Tools</h3>
             <hr />
-            <p>Help anytime, anywhere.</p>
+            <p>Locate nearest police stations and draft legal alerts.</p>
         </div>
     </section>
   </main>
@@ -73,13 +84,15 @@
     function renderCurrentChart() {
         if (allCharts.length > 0) {
             var currentGraph = allCharts[currentIndex];
-            // Applying the palette to Plotly layout
             var layout = {
                 ...currentGraph.layout,
-                paper_bgcolor: '#DAFFFB',
-                plot_bgcolor: '#DAFFFB',
-                font: { color: '#001C30' },
-                margin: { t: 40, b: 40, l: 40, r: 40 }
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                font: { color: '#001C30', family: 'Segoe UI' },
+                margin: { t: 40, b: 40, l: 40, r: 40 },
+                xaxis: { ...currentGraph.layout.xaxis, gridcolor: '#DAFFFB' },
+                yaxis: { ...currentGraph.layout.yaxis, gridcolor: '#DAFFFB' },
+                showlegend: false
             };
             Plotly.newPlot('chart', currentGraph.data, layout, {
                 responsive: true,

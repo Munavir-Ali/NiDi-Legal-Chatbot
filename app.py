@@ -1,33 +1,59 @@
-from flask import Flask, render_template, url_for
-from pymongo import MongoClient
+from flask import Flask, render_template, redirect, request, session, url_for
+import requests
+import os
 import urllib.parse
-import plotly.graph_objects as go
 import pandas as pd
 import json
 from bson.json_util import dumps
+import plotly.graph_objects as go
 import plotly.utils
-import certifi
+from dotenv import load_dotenv
+from functools import lru_cache
+from pymongo import MongoClient
 import sys
-import ssl
+
+load_dotenv()
 
 app = Flask(__name__)
+app.secret_key = os.getenv("FLASK_SECRET_KEY", "dev-fallback-key")
+
+REDIRECT_URI = "http://127.0.0.1:5000/auth/google/callback"
+GOOGLE_DISCOVERY_URL = "https://accounts.google.com/.well-known/openid-configuration"
+GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
+GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
 
 MONGO_PASSWORD = "nidi@2022-2026"
 ENCODED_PASSWORD = urllib.parse.quote_plus(MONGO_PASSWORD)
 MONGO_URI = f"mongodb+srv://nidi_user0:{ENCODED_PASSWORD}@nidi.qkiysav.mongodb.net/?appName=NiDi"
 
 try:
-    client = MongoClient(
-        MONGO_URI,
-        tls=True,
-        tlsAllowInvalidCertificates=True,
-        serverSelectionTimeoutMS=5000
-    )
+    client = MongoClient(MONGO_URI, tls=True, tlsAllowInvalidCertificates=True, serverSelectionTimeoutMS=5000)
     db = client["NiDi_DB"]
     client.admin.command('ping')
-except Exception as e:
+except Exception:
     sys.exit(1)
 
+def get_google_provider_cfg():
+    return requests.get(GOOGLE_DISCOVERY_URL).json()
+
+@app.context_processor
+def inject_user():
+    user_data = session.get("user")
+    if user_data:
+        class UserProxy:
+            def __init__(self, data):
+                self.is_authenticated = True
+                self.name = data.get("name")
+                self.email = data.get("email")
+                self.picture = data.get("picture")
+        return dict(current_user=UserProxy(user_data))
+
+    class AnonymousProxy:
+        def __init__(self):
+            self.is_authenticated = False
+    return dict(current_user=AnonymousProxy())
+
+@lru_cache(maxsize=1)
 def get_crime_stats():
     collections = [
         "total_cases", "ipc_cases", "sll_cases", "crime_against_children",
@@ -74,40 +100,23 @@ def get_crime_stats():
                     fig.add_trace(go.Bar(
                         x=x_data,
                         y=y_data,
-                        marker=dict(
-                            color='#1e3a66',
-                            line=dict(color='#ffffff', width=1)
-                        ),
+                        marker=dict(color='#1e3a66', line=dict(color='#ffffff', width=1)),
                         opacity=0.8,
                         name='Bar'
                     ))
                     fig.add_trace(go.Scatter(
                         x=x_data,
                         y=y_data,
-                        mode='lines+markers',
+                        mode='markers+lines',
                         line=dict(color='#2a5aa8', width=3),
-                        marker=dict(size=8, color='#1e3a66', line=dict(width=1, color='white')),
                         name='Trend'
                     ))
-
                     fig.update_layout(
-                        title={'text': display_title, 'x': 0.5, 'font': {'color': '#1e3a66', 'size': 18, 'family': 'Segoe UI'}},
+                        title={'text': display_title, 'x': 0.5},
                         paper_bgcolor='rgba(0,0,0,0)',
                         plot_bgcolor='rgba(0,0,0,0)',
                         showlegend=False,
-                        xaxis=dict(
-                            gridcolor='#dbe1ec',
-                            tickfont=dict(color='#4b5563'),
-                            showline=True,
-                            linecolor='#1e3a66'
-                        ),
-                        yaxis=dict(
-                            gridcolor='#dbe1ec',
-                            tickfont=dict(color='#4b5563'),
-                            showline=True,
-                            linecolor='#1e3a66'
-                        ),
-                        margin=dict(l=50, r=20, t=60, b=40),
+                        margin=dict(l=50, r=50, t=60, b=40),
                         hovermode='x unified'
                     )
                     all_graphs_json.append(json.loads(json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)))
@@ -124,30 +133,70 @@ def home():
 def about():
     return render_template("about.html")
 
-@app.route("/login")
-def login():
-    return render_template("account.html")
+@app.route("/signin")
+def signup_view():
+    if "user" in session:
+        return redirect(url_for("home"))
+    return render_template("signup.html")
 
-@app.route("/admin")
-def admin():
-    return render_template("admin_login.html")
+@app.route("/login")
+def login_redirect():
+    return redirect(url_for("signup_view"))
+
+@app.route("/signup")
+def signup_redirect():
+    return redirect(url_for("signup_view"))
 
 @app.route("/chat")
 def chat():
-    graphs = get_crime_stats()
-    return render_template("botinterface.html", all_graphs=graphs)
+    if "user" not in session:
+        return redirect(url_for("signup_view"))
+    return render_template("botinterface.html")
 
-@app.route("/disclaimer")
-def disclaimer():
-    return render_template("disclaimer.html")
+@app.route("/auth/google")
+def google_login():
+    cfg = get_google_provider_cfg()
+    return redirect(f"{cfg['authorization_endpoint']}?response_type=code&client_id={GOOGLE_CLIENT_ID}&redirect_uri={REDIRECT_URI}&scope=openid%20email%20profile")
 
-@app.route("/forgot")
-def forgot():
-    return render_template("forgotpswd.html")
+@app.route("/auth/google/callback")
+def google_callback():
+    code = request.args.get("code")
+    cfg = get_google_provider_cfg()
+    token_res = requests.post(cfg["token_endpoint"], data={
+        "code": code, "client_id": GOOGLE_CLIENT_ID, "client_secret": GOOGLE_CLIENT_SECRET,
+        "redirect_uri": REDIRECT_URI, "grant_type": "authorization_code"
+    }).json()
+    userinfo = requests.get(cfg["userinfo_endpoint"], headers={"Authorization": f"Bearer {token_res['access_token']}"}).json()
+    session["user"] = {"email": userinfo["email"], "name": userinfo["name"], "picture": userinfo["picture"]}
+    return redirect(url_for("home"))
 
-@app.route("/signup")
-def signup():
-    return render_template("signup.html")
+
+import requests
+
+
+@app.route("/emergency-locator")
+def emergency_locator():
+    # This page is accessible to everyone
+    return render_template("locator.html")
+
+@app.route("/get_nearby_stations")
+def get_nearby_stations():
+    lat = request.args.get('lat')
+    lon = request.args.get('lon')
+    # Overpass API query for police stations within 5000 meters
+    overpass_url = "http://overpass-api.de/api/interpreter"
+    overpass_query = f"""
+    [out:json];
+    node["amenity"="police"](around:5000,{lat},{lon});
+    out body;
+    """
+    response = requests.get(overpass_url, params={'data': overpass_query})
+    return response.json()
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("home"))
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000, use_reloader=False)

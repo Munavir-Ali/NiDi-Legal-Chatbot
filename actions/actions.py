@@ -4,6 +4,8 @@ from rasa_sdk.executor import CollectingDispatcher
 import pandas as pd
 import os
 import re
+import requests
+
 
 class ActionGetLegalDescription(Action):
     def name(self) -> Text:
@@ -100,6 +102,53 @@ class ActionGetLegalDescription(Action):
             dispatcher.utter_message(
                 text=f"I found Section {clean_query} in multiple acts: {options}. Which one did you mean?")
             dispatcher.utter_message(text=f"Displaying **{matches[0]['label']}** result:\n\n{matches[0]['text']}")
+
+        return []
+
+
+class ActionFindNearbyPolice(Action):
+    def name(self) -> Text:
+        return "action_find_nearby_police"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        metadata = tracker.get_slot("session_metadata") or {}
+        location = metadata.get("location")
+
+        if not location:
+            dispatcher.utter_message(text="I need your location permission to find the nearest station.")
+            return []
+
+        lat, lon = location['lat'], location['lon']
+
+        overpass_url = "http://overpass-api.de/api/interpreter"
+        overpass_query = f"""
+        [out:json];
+        node["amenity"="police"](around:5000,{lat},{lon});
+        out body;
+        """
+
+        try:
+            response = requests.get(overpass_url, params={'data': overpass_query})
+            data = response.json()
+
+            if data['elements']:
+                station = data['elements'][0]
+                name = station.get('tags', {}).get('name', 'Nearest Police Station')
+                dispatcher.utter_message(
+                    text=f"I found the nearest station: {name}",
+                    json_message={
+                        "lat": station['lat'],
+                        "lon": station['lon'],
+                        "name": name
+                    }
+                )
+            else:
+                dispatcher.utter_message(text="No police stations found within 5km.")
+        except Exception:
+            dispatcher.utter_message(text="Error fetching location data.")
 
         return []
 

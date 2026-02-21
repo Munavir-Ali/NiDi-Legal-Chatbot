@@ -3,73 +3,45 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sign Up | NiDi</title>
+  <title>Sign In | NiDi</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='signup.css') }}" />
 </head>
 <body>
 
-  <header class="navbar">
-    <div class="nav-container">
-      <a href="/" class="logo">⚖️ NiDi</a>
-      <div class="hamburger" id="hamburger">
-        <span class="bar"></span>
-        <span class="bar"></span>
-        <span class="bar"></span>
-      </div>
-      <nav class="nav-links" id="nav-menu">
-        <a href="/about">About</a>
-        <a href="/login">Login</a>
-      </nav>
-    </div>
-  </header>
+{% include "navbar.html" %}
 
-  <main class="page">
-    <div class="signup-card">
-      <h1>Join NiDi</h1>
-      <p class="subtitle">Secure access to AI legal assistance</p>
+<main class="page">
+  <div class="signup-card">
 
-      <a href="/login/google" class="google-btn-link">
-        <button class="google-btn">
-          <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google logo" />
-          <span>Continue with Google</span>
-        </button>
-      </a>
+    <div class="icon-header">⚖️</div>
+    <h1>Welcome to NiDi</h1>
+    <p class="subtitle">
+      Your AI-powered legal assistant.
+      Sign in to access BNS, BSA, and legal analytics.
+    </p>
 
-      <div class="divider">
-        <span>OR</span>
-      </div>
+    <a href="/auth/google" class="google-btn-link">
+      <button class="google-btn">
+        <img
+          src="https://developers.google.com/identity/images/g-logo.png"
+          alt="Google logo"
+        />
+        <span>Continue with Google</span>
+      </button>
+    </a>
 
-      <div class="manual-form">
-        <label>Name</label>
-        <div class="input-group">
-          <input type="text" placeholder="Enter your name" />
-        </div>
+    <p class="auth-note">
+      Secure access via Google. No password required.
+    </p>
 
-        <label>Email</label>
-        <div class="input-group">
-          <input type="email" placeholder="Enter your email" />
-        </div>
+    <div class="divider"></div>
 
-        <label>Password</label>
-        <div class="input-group">
-          <input type="password" placeholder="Create a password" />
-        </div>
+    <p class="legal-note">
+      By continuing, you agree to our <a href="/disclaimer">Disclaimer</a> & <a href="/privacy">Privacy Policy</a>.
+    </p>
 
-        <button class="signup-btn">Create Account</button>
-      </div>
+  </div>
+</main>
 
-      <p class="login-text">
-        Already have an account? <a href="/login">Login</a>
-      </p>
-    </div>
-  </main>
-
-  <script>
-    const hamburger = document.getElementById('hamburger');
-    const navMenu = document.getElementById('nav-menu');
-    hamburger.addEventListener('click', () => {
-        navMenu.classList.toggle('active');
-    });
-  </script>
 </body>
 </html>

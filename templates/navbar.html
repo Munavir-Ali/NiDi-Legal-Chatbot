@@ -1,0 +1,17 @@
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="/" class="logo">⚖️ NiDi</a>
+    <div class="nav-links">
+      <a href="/about">About</a>
+
+      {% if current_user.is_authenticated %}
+        <a href="/chat">Start Chat</a>
+        <a href="/logout">Logout</a>
+        <img src="{{ current_user.picture }}" class="nav-avatar">
+      {% else %}
+        <a href="/login">Login</a>
+        <a href="/signup">Sign Up</a>
+      {% endif %}
+    </div>
+  </div>
+</nav>

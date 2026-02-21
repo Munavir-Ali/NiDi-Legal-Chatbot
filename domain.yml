@@ -7,11 +7,13 @@ intents:
   - deny
   - bot_challenge
   - ask_legal_info
+  - find_police
   - mood_great      # Added missing intent
   - mood_unhappy    # Added missing intent
 
 entities:
   - legal_section
+  - session_metadata
 
 slots:
   legal_section:
@@ -20,6 +22,12 @@ slots:
     mappings:
       - type: from_entity
         entity: legal_section
+
+  session_metadata:
+    type: any
+    mappings:
+      - type: from_entity
+        entity: session_metadata
 
 responses:
   utter_greet:
@@ -46,6 +54,7 @@ responses:
 
 actions:
   - action_get_legal_description # Registered your custom action
+  - action_find_nearby_police
 
 session_config:
   session_expiration_time: 60

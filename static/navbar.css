@@ -1,0 +1,110 @@
+/* =========================
+   NAVBAR BASE
+   ========================= */
+
+.navbar {
+  background: linear-gradient(90deg, #1e3a66, #223f73);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  height: 64px;
+}
+
+.nav-container {
+  max-width: 1200px;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* =========================
+   LOGO
+   ========================= */
+
+.logo {
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+}
+
+.logo:hover {
+  opacity: 0.9;
+}
+
+/* =========================
+   NAV LINKS
+   ========================= */
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav-links a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+.nav-links a:hover {
+  opacity: 1;
+}
+
+/* =========================
+   USER INFO (LOGGED IN)
+   ========================= */
+
+.avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+}
+
+.username {
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* =========================
+   BUTTON STYLE LINKS
+   ========================= */
+
+.login-btn,
+.logout-btn {
+  padding: 6px 14px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.15);
+  font-weight: 600;
+}
+
+.login-btn:hover,
+.logout-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* =========================
+   MOBILE
+   ========================= */
+
+@media (max-width: 600px) {
+  .nav-container {
+    padding: 0 16px;
+  }
+
+  .username {
+    display: none;
+  }
+}

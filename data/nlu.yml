@@ -89,3 +89,11 @@ nlu:
     - are you a human?
     - am I talking to a bot?
     - am I talking to a human?
+
+- intent: find_police
+  examples: |
+    - find the nearest police station
+    - where is the police station?
+    - help me find a station
+    - nearby police station
+    - I need help

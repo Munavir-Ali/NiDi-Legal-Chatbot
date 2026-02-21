@@ -4,24 +4,45 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Chat | NIDI LawBot</title>
-  <link rel="stylesheet" href="static/botinterface.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='botinterface.css') }}" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    .map-bubble {
+      width: 100%;
+      max-width: 300px;
+      height: 200px;
+      border-radius: 10px;
+      margin: 10px 0;
+      border: 2px solid #64CCC5;
+      z-index: 1;
+    }
+    .nav-avatar {
+      width: 30px;
+      border-radius: 50%;
+      margin-left: 10px;
+      vertical-align: middle;
+      border: 1px solid #64CCC5;
+    }
+  </style>
 </head>
 <body>
 
   <header class="navbar">
     <div class="nav-container">
       <a href="{{ url_for('home') }}" class="logo">⚖️ NiDi</a>
-
       <div class="hamburger" id="hamburger">
         <span class="bar"></span>
         <span class="bar"></span>
         <span class="bar"></span>
       </div>
-
       <nav class="nav-links" id="nav-menu">
         <a href="/about">About</a>
-        <a href="/login">Login</a>
-        <a href="/signup">Sign Up</a>
+        {% if current_user.is_authenticated %}
+          <a href="/logout">Logout</a>
+          <img src="{{ current_user.picture }}" alt="Profile" class="nav-avatar">
+        {% else %}
+          <a href="/signin">Sign In</a>
+        {% endif %}
       </nav>
     </div>
   </header>
@@ -42,8 +63,8 @@
     </div>
   </main>
 
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
-    // Navigation Toggle
     document.addEventListener('DOMContentLoaded', () => {
         const hamburger = document.getElementById('hamburger');
         const navMenu = document.getElementById('nav-menu');
@@ -54,52 +75,117 @@
         }
     });
 
-    async function sendMessage() {
-        const input = document.getElementById('user-input');
+    function appendMessage(role, content) {
         const chatBox = document.getElementById('chat-box');
-        const message = input.value.trim();
+        const side = role === 'user' ? 'right' : 'left';
+        const avatar = role === 'user' ? '👤' : '🤖';
+        const avatarClass = role === 'user' ? 'user' : 'bot';
 
-        if (!message) return;
-
-        chatBox.innerHTML += `
-            <div class="message-row right">
-                <div class="message">${message}</div>
-                <div class="avatar user">👤</div>
+        const msgHtml = `
+            <div class="message-row ${side}">
+                ${role === 'left' || role === 'bot' ? `<div class="avatar ${avatarClass}">${avatar}</div>` : ''}
+                <div class="message">${content}</div>
+                ${role === 'user' ? `<div class="avatar ${avatarClass}">${avatar}</div>` : ''}
             </div>
         `;
-
-        input.value = '';
+        chatBox.insertAdjacentHTML('beforeend', msgHtml);
         chatBox.scrollTop = chatBox.scrollHeight;
+    }
 
+    function displayMapInChat(lat, lon, name) {
+        const chatId = 'map-' + Date.now();
+        appendMessage("bot", `
+            <div id="${chatId}" class="map-bubble"></div>
+            <p><b>${name}</b></p>
+            <button class="cta-btn" style="width:100%; padding: 8px; background: #176B87; color: white; border: none; border-radius: 5px; cursor: pointer;"
+                    onclick="window.open('https://www.google.com/maps?q=$${lat},${lon}')">
+                Navigate
+            </button>
+        `);
+
+        setTimeout(() => {
+            let chatMap = L.map(chatId, {zoomControl: false}).setView([lat, lon], 15);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(chatMap);
+            L.marker([lat, lon]).addTo(chatMap).bindPopup(name);
+        }, 200);
+    }
+
+    async function sendTextOnly(message) {
+        const chatBox = document.getElementById('chat-box');
         try {
-            const response = await fetch('http://10.195.17.130:5005/webhooks/rest/webhook', {
+            const response = await fetch('http://127.0.0.1:5005/webhooks/rest/webhook', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ sender: "user", message: message })
+                body: JSON.stringify({
+                    sender: "user",
+                    message: message
+                })
             });
-
             const data = await response.json();
-
             data.forEach(res => {
-                chatBox.innerHTML += `
-                    <div class="message-row left">
-                        <div class="avatar bot">🤖</div>
-                        <div class="message">${res.text}</div>
-                    </div>
-                `;
+                if (res.text) appendMessage("bot", res.text);
+                if (res.custom) displayMapInChat(res.custom.lat, res.custom.lon, res.custom.name);
             });
-
-            chatBox.scrollTop = chatBox.scrollHeight;
         } catch (error) {
-            console.error("Error:", error);
-            chatBox.innerHTML += `
-                <div class="message-row left">
-                    <div class="avatar bot">🤖</div>
-                    <div class="message">Sorry, I'm having trouble connecting to the server.</div>
-                </div>
-            `;
+            appendMessage("bot", "Connection error.");
         }
     }
+
+   async function sendMessage() {
+    const input = document.getElementById('user-input');
+    const message = input.value.trim();
+    if (!message) return;
+
+    appendMessage("user", message);
+    input.value = '';
+
+    // If the message is about help or police, we MUST get location first
+    const needsLocation = /police|station|help|emergency|danger/i.test(message);
+
+    if (needsLocation && navigator.geolocation) {
+        appendMessage("bot", "Locating you for accuracy... 📡"); // Feedback for the user
+
+        navigator.geolocation.getCurrentPosition(async (pos) => {
+            const coords = { lat: pos.coords.latitude, lon: pos.coords.longitude };
+            await sendToRasa(message, coords);
+        }, (err) => {
+            console.error(err);
+            sendToRasa(message, null);
+        }, { timeout: 10000 });
+    } else {
+        await sendToRasa(message, null);
+    }
+}
+
+async function sendToRasa(message, coords) {
+    try {
+        const payload = {
+            sender: "user",
+            message: message
+        };
+
+        // Only add metadata if we actually have coords
+        if (coords) {
+            payload.metadata = { location: coords };
+        }
+
+        const response = await fetch('http://127.0.0.1:5005/webhooks/rest/webhook', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+        data.forEach(res => {
+            if (res.text) appendMessage("bot", res.text);
+            if (res.custom) {
+                displayMapInChat(res.custom.lat, res.custom.lon, res.custom.name);
+            }
+        });
+    } catch (error) {
+        appendMessage("bot", "Connection error with the legal brain.");
+    }
+}
 
     function handleKeyPress(event) {
         if (event.key === 'Enter') {
@@ -107,6 +193,5 @@
         }
     }
   </script>
-
 </body>
 </html>

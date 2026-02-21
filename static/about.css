@@ -15,8 +15,19 @@ body {
 
 /* NAVBAR */
 .navbar {
-  background: #1e3a66;
+  background: linear-gradient(90deg, #1e3a66, #223f73);
   padding: 14px 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  vertical-align: middle;
+  margin-left: 10px;
 }
 
 .nav-container {
@@ -29,23 +40,26 @@ body {
 }
 
 .logo {
-  color: #fff;
+  color: #ffffff;
   font-weight: 600;
   font-size: 18px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  text-decoration: none;
 }
 
 .nav-links a {
-  color: #fff;
+  color: #ffffff;
   text-decoration: none;
-  margin-left: 24px;
+  margin-left: 22px;
   font-size: 15px;
 }
 
-.nav-links a:hover {
-  text-decoration: underline;
+.main {
+  background: #eef1f6;
+  margin: 20px auto;
+  max-width: 1200px;
+  border-radius: 8px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
 }
 
 /* HERO */
