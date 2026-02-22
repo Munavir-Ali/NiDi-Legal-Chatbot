@@ -137,45 +137,50 @@ class ActionFindNearbyPolice(Action):
             dispatcher.utter_message(text="I need your location permission to find the nearest station.")
             return []
 
-        lat, lon = location['lat'], location['lon']
+        lat, lon = float(location['lat']), float(location['lon'])
         overpass_url = "http://overpass-api.de/api/interpreter"
-        overpass_query = f"""
-        [out:json];
-        (
-          node["amenity"="police"](around:5000,{lat},{lon});
-          way["amenity"="police"](around:5000,{lat},{lon});
-        );
-        out center;
-        """
 
-        try:
-            response = requests.get(overpass_url, params={'data': overpass_query}, timeout=10)
-            elements = response.json().get('elements', [])
-            stations = []
+        final_stations = []
+        for radius in [2000, 5000, 10000]:
+            overpass_query = f"""
+            [out:json];
+            (
+              node["amenity"="police"](around:{radius},{lat},{lon});
+              way["amenity"="police"](around:{radius},{lat},{lon});
+            );
+            out center;
+            """
+            try:
+                response = requests.get(overpass_url, params={'data': overpass_query}, timeout=10)
+                elements = response.json().get('elements', [])
 
-            for el in elements:
-                s_lat = el.get('lat') or el.get('center', {}).get('lat')
-                s_lon = el.get('lon') or el.get('center', {}).get('lon')
-                tags = el.get('tags', {})
-                dist = haversine(lat, lon, s_lat, s_lon)
+                stations = []
+                for el in elements:
+                    s_lat = el.get('lat') or el.get('center', {}).get('lat')
+                    s_lon = el.get('lon') or el.get('center', {}).get('lon')
+                    tags = el.get('tags', {})
+                    dist = haversine(lat, lon, s_lat, s_lon)
 
-                stations.append({
-                    "name": tags.get("name", "Police Station"),
-                    "address": f"{tags.get('addr:street', '')} {tags.get('addr:suburb', '')}".strip() or "Address not listed",
-                    "phone": tags.get("contact:phone") or tags.get("phone") or "Contact not available",
-                    "lat": s_lat, "lon": s_lon, "distance": round(dist, 2)
-                })
+                    stations.append({
+                        "name": tags.get("name", "Police Station"),
+                        "address": f"{tags.get('addr:street', '')} {tags.get('addr:suburb', '')}".strip() or "Address not listed",
+                        "phone": tags.get("contact:phone") or tags.get("phone") or "Contact not available",
+                        "lat": s_lat, "lon": s_lon, "distance": round(dist, 2)
+                    })
 
-            stations.sort(key=lambda x: x['distance'])
+                if len(stations) >= 3 or radius == 10000:
+                    stations.sort(key=lambda x: x['distance'])
+                    final_stations = stations[:4]
+                    break
+            except:
+                continue
 
-            if not stations:
-                dispatcher.utter_message(text="I couldn't find any police stations within 5km.")
-            else:
-                dispatcher.utter_message(
-                    text="Here are the nearest police stations to you:",
-                    json_message={"type": "station_list", "data": stations[:3]}
-                )
-        except:
-            dispatcher.utter_message(text="Service error while searching for stations.")
+        if not final_stations:
+            dispatcher.utter_message(text="I couldn't find any police stations even within 10km.")
+        else:
+            dispatcher.utter_message(
+                text=f"I found {len(final_stations)} stations near you:",
+                json_message={"type": "station_list", "data": final_stations}
+            )
 
         return []

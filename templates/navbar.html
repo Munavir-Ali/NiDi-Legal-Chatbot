@@ -1,17 +1,28 @@
-<nav class="navbar">
+<header class="navbar">
   <div class="nav-container">
-    <a href="/" class="logo">⚖️ NiDi</a>
-    <div class="nav-links">
-      <a href="/about">About</a>
+    <a href="{{ url_for('home') }}" class="logo">⚖️ NiDi</a>
+
+    <div class="nav-right-group">
+      <div class="hamburger" id="hamburger">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </div>
+
+      <nav class="nav-links" id="nav-menu">
+        <a href="/about">About</a>
+        {% if current_user.is_authenticated %}
+          <a href="/chat">Chat Bot</a>
+          <a href="/emergency-locator">Locator</a>
+          <a href="/logout">Logout</a>
+        {% else %}
+          <a href="/signin">Sign In</a>
+        {% endif %}
+      </nav>
 
       {% if current_user.is_authenticated %}
-        <a href="/chat">Start Chat</a>
-        <a href="/logout">Logout</a>
-        <img src="{{ current_user.picture }}" class="nav-avatar">
-      {% else %}
-        <a href="/login">Login</a>
-        <a href="/signup">Sign Up</a>
+        <img src="{{ current_user.picture }}" alt="Profile" class="nav-avatar">
       {% endif %}
     </div>
   </div>
-</nav>
+</header>

@@ -10,6 +10,7 @@ body {
   color: #001C30;
 }
 
+/* NAVBAR - SYNCED WITH INDEX.CSS */
 .navbar {
   background: #001C30;
   padding: 14px 0;
@@ -25,7 +26,6 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: relative;
 }
 
 .logo {
@@ -33,6 +33,17 @@ body {
   font-weight: 600;
   font-size: 18px;
   text-decoration: none;
+}
+
+.nav-right-group {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
 }
 
 .nav-links a {
@@ -45,6 +56,14 @@ body {
 
 .nav-links a:hover {
   color: #64CCC5;
+}
+
+.nav-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid #64CCC5;
+  object-fit: cover;
 }
 
 .hamburger {
@@ -60,6 +79,7 @@ body {
   background-color: #64CCC5;
 }
 
+/* CHAT INTERFACE CONTENT */
 .chat-wrapper {
   max-width: 1200px;
   margin: 20px auto;
@@ -171,9 +191,15 @@ body {
   background: #001C30;
 }
 
+/* RESPONSIVE STYLES */
 @media (max-width: 768px) {
   .hamburger {
     display: flex;
+    order: 1;
+  }
+
+  .nav-avatar {
+    order: 2;
   }
 
   .nav-links {

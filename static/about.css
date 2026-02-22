@@ -1,4 +1,3 @@
-/* RESET */
 * {
   margin: 0;
   padding: 0;
@@ -6,28 +5,18 @@
   font-family: "Segoe UI", Tahoma, sans-serif;
 }
 
-/* BODY */
 body {
-  background: #f2f4f8;
-  color: #1f2937;
-  line-height: 1.6;
+  background: #DAFFFB;
+  color: #001C30;
 }
 
-/* NAVBAR */
+/* UNIFORM NAVBAR */
 .navbar {
-  background: linear-gradient(90deg, #1e3a66, #223f73);
+  background: #001C30;
   padding: 14px 0;
   position: sticky;
   top: 0;
-  z-index: 1000;
-}
-
-.avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  vertical-align: middle;
-  margin-left: 10px;
+  z-index: 2000;
 }
 
 .nav-container {
@@ -40,119 +29,284 @@ body {
 }
 
 .logo {
-  color: #ffffff;
+  color: #64CCC5;
   font-weight: 600;
   font-size: 18px;
   text-decoration: none;
 }
 
+.nav-right-group {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+}
+
 .nav-links a {
-  color: #ffffff;
+  color: #DAFFFB;
   text-decoration: none;
   margin-left: 22px;
   font-size: 15px;
+  transition: color 0.3s;
 }
 
-.main {
-  background: #eef1f6;
-  margin: 20px auto;
-  max-width: 1200px;
-  border-radius: 8px;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
-  overflow: hidden;
+.nav-links a:hover {
+  color: #64CCC5;
 }
 
-/* HERO */
-.hero {
-  background: #eef1f6;
-  padding: 60px 20px;
-  text-align: center;
+.nav-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid #64CCC5;
+  object-fit: cover;
 }
 
-.hero h1 {
-  font-size: 32px;
-  color: #1e3a66;
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 5px;
 }
 
-/* CONTENT */
-.content {
-  padding: 40px 20px;
+.bar {
+  width: 25px;
+  height: 3px;
+  background-color: #64CCC5;
 }
 
-.card {
+/* MAIN CONTENT */
+.main-content {
   max-width: 1100px;
   margin: auto;
-  background: #f7f9fc;
-  padding: 40px;
-  border-radius: 8px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  padding: 20px;
 }
 
-.card h2 {
-  color: #1e3a66;
-  margin-bottom: 16px;
-  margin-top: 24px;
+.hero-section {
+  text-align: center;
+  padding: 60px 20px;
 }
 
-.card p {
-  max-width: 850px;
-  margin-bottom: 20px;
+.hero-section h1 {
+  font-size: 36px;
+  color: #001C30;
+  margin-bottom: 10px;
+}
+
+.hero-section p {
+  color: #176B87;
+  font-size: 18px;
+}
+
+.info-card {
+  background: #ffffff;
+  padding: 35px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  margin-bottom: 25px;
+}
+
+.info-card h2 {
+  color: #176B87;
+  margin-bottom: 15px;
+  border-left: 5px solid #64CCC5;
+  padding-left: 15px;
+}
+
+.info-card p {
+  line-height: 1.7;
+  margin-bottom: 15px;
+  font-size: 16px;
 }
 
 /* OBJECTIVES GRID */
-.objectives {
-  display: flex;
-  gap: 40px;
+.objectives-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
   margin-top: 20px;
 }
 
-.objectives ul {
-  flex: 1;
-  list-style: none;
+.obj-item {
+  background: #f0fdfc;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #64CCC5;
 }
 
-.objectives li {
-  margin-bottom: 20px;
-  position: relative;
-  padding-left: 20px;
-}
-
-.objectives li::before {
-  content: "•";
-  position: absolute;
-  left: 0;
-  top: 0;
-  color: #1e3a66;
-  font-size: 22px;
-}
-
-.objectives strong {
+.obj-item strong {
   display: block;
-  margin-bottom: 6px;
-  color: #1e3a66;
+  font-size: 18px;
+  margin-bottom: 8px;
+  color: #001C30;
+}
+
+/* DISCLAIMER */
+.disclaimer-box {
+  background: #001C30;
+  color: #DAFFFB;
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  border-left: 8px solid #e63946;
+}
+
+/* HELPLINES */
+.helpline-section {
+  background: #ffffff;
+  padding: 35px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.helpline-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.phone-item {
+  padding: 15px;
+  background: #DAFFFB;
+  border-radius: 8px;
+  font-size: 17px;
+}
+
+.phone-item strong {
+  color: #e63946;
+  font-size: 19px;
 }
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
-  .nav-container {
+  .hamburger {
+    display: flex;
+    order: 1;
+  }
+
+  .nav-avatar {
+    order: 2;
+  }
+
+  .nav-links {
+    display: none;
     flex-direction: column;
-    gap: 10px;
+    width: 100%;
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background: #001C30;
+    padding: 20px 0;
+    z-index: 1000;
+  }
+
+  .nav-links.active {
+    display: flex;
   }
 
   .nav-links a {
-    margin-left: 12px;
-    margin-right: 12px;
+    margin: 10px 0;
+    margin-left: 0;
   }
 
-  .objectives {
-    flex-direction: column;
+  .hero-section h1 {
+    font-size: 28px;
   }
+}
 
-  .card {
-    padding: 25px;
+.dial-btn {
+  background-color: #e63946 !important;
+  color: #ffffff !important;
+  border-radius: 25px !important;
+  border: none !important;
+  padding: 10px 20px !important;
+  font-weight: bold !important;
+  cursor: pointer !important;
+}
+
+.dial-btn:hover {
+  background-color: #c02d38 !important;
+}
+
+/* HELPLINE SECTION CONTAINER */
+.helpline-section {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.helpline-section h2 {
+  margin-bottom: 25px;
+  font-size: 24px;
+  color: #001C30;
+}
+
+/* THE GRID - Set to 4 columns for large screens */
+.helpline-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+}
+
+/* INDIVIDUAL CARD */
+.phone-item {
+  background: #E0FBFB; /* Light teal background from image */
+  padding: 20px 10px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: row; /* Horizontal layout */
+  align-items: center;
+  justify-content: space-around;
+}
+
+.phone-item span {
+  font-size: 14px;
+  font-weight: 600;
+  color: #001C30;
+}
+
+/* THE RED PILL BUTTON */
+.dial-btn {
+  background-color: #ef4444; /* Bright red from image */
+  color: white;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 50px; /* Smooth pill shape */
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s, background 0.3s;
+}
+
+.dial-btn:hover {
+  background-color: #dc2626;
+  transform: translateY(-2px);
+}
+
+/* MOBILE RESPONSIVENESS */
+@media (max-width: 900px) {
+  .helpline-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2x2 on tablets */
   }
+}
 
-  .hero h1 {
-    font-size: 26px;
+@media (max-width: 600px) {
+  .helpline-grid {
+    grid-template-columns: 1fr; /* Stacked on phones */
+  }
+  .phone-item {
+    padding: 15px;
   }
 }

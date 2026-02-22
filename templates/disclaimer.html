@@ -3,53 +3,49 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Disclaimer | NIDI LawBot</title>
-  <link rel="stylesheet" href="static/disclaimer.css" />
+  <title>Disclaimer | NiDi</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='disclaimer.css') }}" />
 </head>
-<body>
 
-  <header class="navbar">
-    <div class="nav-container">
-      <a href="{{ url_for('home') }}" class="logo" style="text-decoration: none;">⚖️NiDi</a>
-      <div class="nav-links">
-         <a href="/about">About</a>
-        <a href="/login">Login</a>
-        <a href="/signup">Sign Up</a>
-      </div>
-    </div>
-  </header>
+  {% include 'navbar.html' %}
 
-  <section class="hero">
-    <h1>Disclaimer</h1>
-  </section>
+  <main class="main-content">
+    <section class="hero-section">
+      <h1>Legal Disclaimer</h1>
+      <p>Please read this carefully before using the NiDi platform.</p>
+    </section>
 
-  <main class="content">
-    <div class="warning-box">
+    <div class="disclaimer-wrapper">
+      <div class="warning-card">
+        <div class="warning-header">
+          <span class="warning-icon">⚠️</span>
+          <h2>Important Notice</h2>
+        </div>
 
-      <div class="warning-icon">⚠️</div>
+        <div class="warning-body">
+          <p>
+            <strong>NiDi (Legal Assistant)</strong> is an AI-powered tool designed to provide general legal information, awareness, and emergency guidance. While we strive for accuracy, the legal landscape is constantly changing.
+          </p>
 
-      <div class="warning-text">
-        <p>
-          <strong>NIDI LawBot</strong> is an AI-powered tool designed to provide
-          general legal information and guidance. The advice given by this chatbot
-          is not a substitute for professional legal advice from a licensed attorney.
-          There are no guarantees regarding the accuracy, completeness, or applicability
-          of the information provided. For personalized legal advice, please consult a
-          qualified legal professional.
-        </p>
+          <ul>
+            <li><strong>Not Legal Advice:</strong> The information provided by this chatbot is for educational purposes only and does not constitute professional legal advice.</li>
+            <li><strong>No Attorney-Client Relationship:</strong> Use of this bot does not create an attorney-client relationship between you and the developers of NiDi.</li>
+            <li><strong>Accuracy:</strong> AI models can occasionally produce incorrect information. Always verify critical legal sections with official government gazettes or a licensed attorney.</li>
+            <li><strong>Emergency Services:</strong> The police station finder is a tool for convenience. In life-threatening emergencies, always dial <strong>112</strong> immediately.</li>
+          </ul>
 
-        <p class="bold">
-          For personalized legal advice, please consult a qualified legal professional.
-        </p>
+          <div class="highlight-box">
+            <p>For personalized legal solutions, please consult a qualified legal professional or a licensed advocate.</p>
+          </div>
+        </div>
       </div>
 
+      <p class="agreement-text">
+        By continuing to use NiDi, you acknowledge that you have read, understood, and agreed to the terms of this disclaimer.
+      </p>
     </div>
-
-    <p class="footer-text">
-      By using NIDI LawBot, you agree to this Privacy Policy. This policy may be updated
-      periodically, and any changes will be posted on this page.
-    </p>
   </main>
-
+{% include 'footer.html' %}
 </body>
 </html>

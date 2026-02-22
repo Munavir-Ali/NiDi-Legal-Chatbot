@@ -108,3 +108,18 @@
     display: none;
   }
 }
+
+.nav-right-group {
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex !important;
+    order: 1;
+  }
+  .nav-avatar {
+    order: 2;
+  }
+}

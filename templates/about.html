@@ -3,112 +3,79 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>About</title>
-  <link rel="stylesheet" href="static/about.css" />
+  <title>About | NiDi</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='about.css') }}" />
 </head>
 <body>
+{% include 'navbar.html' %}
+  <main class="main-content">
+    <section class="hero-section">
+      <h1>Bridging the Justice Gap</h1>
+      <p>Empowering citizens with AI-driven legal intelligence and emergency tools.</p>
+    </section>
 
-<header class="navbar">
-    <div class="nav-container">
-      <a href="{{ url_for('home') }}" class="logo">⚖️ NiDi</a>
-
-      <div class="hamburger" id="hamburger">
-        <span class="bar"></span>
-        <span class="bar"></span>
-        <span class="bar"></span>
+    <section class="card-container">
+      <div class="info-card">
+        <h2>Why NiDi?</h2>
+        <p>
+          With crime rates evolving and legal complexities increasing, the gap between the law and the common citizen has never been wider. Legal information is often trapped behind complex jargon, making it difficult for the average person to understand their rights or seek immediate help.
+        </p>
+        <p>
+          <strong>NiDi</strong> (Legal Assistant) was born out of the necessity to provide instant, simplified, and actionable legal guidance to everyone, regardless of their background.
+        </p>
       </div>
 
-      <nav class="nav-links" id="nav-menu">
-        <a href="/about">About</a>
-        {% if current_user.is_authenticated %}
-          <a href="/chat">Chat</a>
-          <a href="/logout">Logout</a>
-          <img src="{{ current_user.picture }}" alt="Profile" style="width:30px; border-radius:50%; margin-left:10px; vertical-align:middle; border: 1px solid #64CCC5;">
-        {% else %}
-          <a href="/signup">Sign Up</a>
-        {% endif %}
-      </nav>
+      <div class="info-card">
+        <h2>Key Objectives</h2>
+        <div class="objectives-grid">
+          <div class="obj-item">
+            <strong>⚖️ Accessible Law</strong>
+            <p>Demystifying the BNS, BSA, and Indian Constitution into simple, everyday language.</p>
+          </div>
+          <div class="obj-item">
+            <strong>🚨 Emergency Response</strong>
+            <p>Integrating high-accuracy GPS tools to locate the nearest police stations during critical situations.</p>
+          </div>
+          <div class="obj-item">
+            <strong>📊 Data-Driven Awareness</strong>
+            <p>Visualizing crime trends to help citizens understand the safety landscape of their regions.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="disclaimer-box">
+        <p><strong>⚠️ Important Disclaimer:</strong> NiDi is an informative AI platform designed to provide legal guidance and awareness. It <strong>does not</strong> constitute legal advice and is <strong>not a replacement</strong> for a qualified legal professional or advocate.</p>
+      </div>
+
+</div><div class="helpline-section">
+  <h2>Emergency Helplines</h2>
+  <div class="helpline-grid">
+    <div class="phone-item">
+      <span>Police Control</span>
+      <button class="dial-btn" onclick="window.location.href='tel:112'">📞 112</button>
     </div>
-  </header>
-  <!-- HERO -->
-  <section class="hero">
-    <h1>About Us</h1>
-  </section>
-
-  <!-- CONTENT -->
-  <main class="content">
-    <section class="card">
-
-      <h2>Problem Statement</h2>
-      <p>
-        Legal information is often difficult for the common person to understand,
-        leading to legal misunderstandings and uninformed decision-making.
-        NIDI LawBot is developed to bridge this gap by providing easy-to-understand
-        legal guidance instantly, empowering citizens to make informed decisions.
-      </p>
-
-      <h2>Our Objectives</h2>
-
-      <div class="objectives">
-        <!-- LEFT COLUMN -->
-        <ul>
-          <li>
-            <strong>Provide Accessible Legal Information</strong>
-            <p>
-              Offer instant, free, and user-friendly legal assistance that demystifies
-              the complexities.
-            </p>
-          </li>
-
-          <li>
-            <strong>Increase Legal Awareness</strong>
-            <p>
-              Educate the general public about their rights and the legal procedures
-              that affect them.
-            </p>
-          </li>
-
-          <li>
-            <strong>Promote Justice</strong>
-            <p>
-              Empower individuals by providing them with knowledge to make informed
-              legal choices.
-            </p>
-          </li>
-        </ul>
-
-        <!-- RIGHT COLUMN -->
-        <ul>
-          <li>
-            <strong>Promote Justice</strong>
-            <p>
-              Empower individuals by providing them with knowledge to make informed
-              choices.
-            </p>
-          </li>
-
-          <li>
-            <strong>Technologies Used</strong>
-          </li>
-
-          <li>
-            <strong>Natural Language Processing (NLP)</strong>
-            <p>
-              Analyze and understand user inquiries.
-            </p>
-          </li>
-
-          <li>
-            <strong>Django and MongoDB</strong>
-            <p>
-              Develop and manage the web application and data storage.
-            </p>
-          </li>
-        </ul>
-      </div>
-
+    <div class="phone-item">
+      <span>Women Helpline</span>
+      <button class="dial-btn" onclick="window.location.href='tel:1091'">📞 1091</button>
+    </div>
+    <div class="phone-item">
+      <span>Cyber Cell</span>
+      <button class="dial-btn" onclick="window.location.href='tel:1930'">📞 1930</button>
+    </div>
+    <div class="phone-item">
+      <span>Child Helpline</span>
+      <button class="dial-btn" onclick="window.location.href='tel:1098'">📞 1098</button>
+    </div>
+  </div>
+</div>
     </section>
   </main>
 
+  <script>
+    document.getElementById('hamburger').addEventListener('click', function() {
+        document.getElementById('nav-menu').classList.toggle('active');
+    });
+  </script>
+{% include 'footer.html' %}
 </body>
 </html>

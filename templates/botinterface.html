@@ -17,27 +17,7 @@
   </style>
 </head>
 <body>
-
-  <header class="navbar">
-    <div class="nav-container">
-      <a href="{{ url_for('home') }}" class="logo">⚖️ NiDi</a>
-      <div class="hamburger" id="hamburger">
-        <span class="bar"></span>
-        <span class="bar"></span>
-        <span class="bar"></span>
-      </div>
-      <nav class="nav-links" id="nav-menu">
-        <a href="/about">About</a>
-        {% if current_user.is_authenticated %}
-          <a href="/logout">Logout</a>
-          <img src="{{ current_user.picture }}" alt="Profile" class="nav-avatar">
-        {% else %}
-          <a href="/signin">Sign In</a>
-        {% endif %}
-      </nav>
-    </div>
-  </header>
-
+  {% include 'navbar.html' %}
   <main class="chat-wrapper">
     <div class="chat-box" id="chat-box">
       <div class="message-row left">
@@ -113,7 +93,8 @@
             const payload = { sender: "user", message: message, metadata: {} };
             if (coords) { payload.metadata = { location: coords }; }
 
-            const response = await fetch('http://127.0.0.1:5005/webhooks/rest/webhook', {
+            // Use the proxy route on your Flask server instead of direct IP
+            const response = await fetch('/rasa_proxy', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
@@ -131,7 +112,7 @@
                                 <p>📏 Distance: ${station.distance} km</p>
                                 <p>🏠 ${station.address}</p>
                                 <p>📞 ${station.phone}</p>
-                                <button class="nav-btn" onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=${station.lat},${station.lon}')">Navigate</button>
+                                <button class="nav-btn" onclick="window.open('https://www.google.com/maps/search/?api=1&query=${station.lat},${station.lon}')">Navigate</button>
                             </div>`;
                     });
                     listHtml += '</div>';
@@ -147,5 +128,6 @@
         if (event.key === 'Enter') { sendMessage(); }
     }
   </script>
+{% include 'footer.html' %}
 </body>
 </html>

@@ -10,7 +10,7 @@ import plotly.utils
 from dotenv import load_dotenv
 from functools import lru_cache
 from pymongo import MongoClient
-import sys
+from math import radians, cos, sin, asin, sqrt
 
 load_dotenv()
 
@@ -32,7 +32,14 @@ try:
     print("✅ Connected to MongoDB successfully!")
 except Exception as e:
     print(f"❌ MongoDB Connection Failed: {e}")
-    # sys.exit(1)  <-- Comment this out for now so the app runs anyway
+
+def haversine(lat1, lon1, lat2, lon2):
+    lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
+    dlon = lon2 - lon1
+    dlat = lat2 - lat1
+    a = sin(dlat / 2) ** 2 + cos(lat1) * cos(lat2) * sin(dlon / 2) ** 2
+    c = 2 * asin(sqrt(a))
+    return round(6371 * c, 2)
 
 def get_google_provider_cfg():
     return requests.get(GOOGLE_DISCOVERY_URL).json()
@@ -54,7 +61,6 @@ def inject_user():
                 self.email = data.get("email")
                 self.picture = data.get("picture")
         return dict(current_user=UserProxy(user_data))
-
     class AnonymousProxy:
         def __init__(self):
             self.is_authenticated = False
@@ -73,7 +79,6 @@ def get_crime_stats():
         try:
             cursor = db[col_name].find({})
             df = pd.DataFrame(json.loads(dumps(cursor)))
-
             if not df.empty:
                 fig = go.Figure()
                 x_data, y_data = [], []
@@ -88,7 +93,6 @@ def get_crime_stats():
                             row_idx = total_rows[0]
                     x_data = year_cols
                     y_data = [pd.to_numeric(df.loc[row_idx, yr], errors='coerce') for yr in year_cols]
-
                 elif 'Year' in df.columns:
                     df['Year'] = pd.to_numeric(df['Year'], errors='coerce')
                     potential_y = ['Total', 'Cases', 'No. of cases']
@@ -96,7 +100,6 @@ def get_crime_stats():
                     df = df.dropna(subset=['Year']).sort_values('Year')
                     x_data = df['Year']
                     y_data = pd.to_numeric(df[count_col], errors='coerce')
-
                 elif 'District' in df.columns:
                     df = df[~df['District'].str.contains('Total', na=False)]
                     x_data = df['District']
@@ -105,18 +108,14 @@ def get_crime_stats():
 
                 if len(x_data) > 0:
                     fig.add_trace(go.Bar(
-                        x=x_data,
-                        y=y_data,
+                        x=x_data, y=y_data,
                         marker=dict(color='#1e3a66', line=dict(color='#ffffff', width=1)),
-                        opacity=0.8,
-                        name='Bar'
+                        opacity=0.8
                     ))
                     fig.add_trace(go.Scatter(
-                        x=x_data,
-                        y=y_data,
+                        x=x_data, y=y_data,
                         mode='markers+lines',
-                        line=dict(color='#2a5aa8', width=3),
-                        name='Trend'
+                        line=dict(color='#2a5aa8', width=3)
                     ))
                     fig.update_layout(
                         title={'text': display_title, 'x': 0.5},
@@ -140,6 +139,14 @@ def home():
 def about():
     return render_template("about.html")
 
+@app.route("/disclaimer")
+def disclaimer():
+    return render_template("disclaimer.html")
+
+@app.route("/privacy")
+def privacy():
+    return render_template("privacy.html")
+
 @app.route("/signin")
 def signup_view():
     if "user" in session:
@@ -147,11 +154,8 @@ def signup_view():
     return render_template("signup.html")
 
 @app.route("/login")
-def login_redirect():
-    return redirect(url_for("signup_view"))
-
 @app.route("/signup")
-def signup_redirect():
+def login_redirect():
     return redirect(url_for("signup_view"))
 
 @app.route("/chat")
@@ -164,7 +168,8 @@ def chat():
 def google_login():
     cfg = get_google_provider_cfg()
     redirect_uri = get_google_redirect_uri()
-    return redirect(f"{cfg['authorization_endpoint']}?response_type=code&client_id={GOOGLE_CLIENT_ID}&redirect_uri={redirect_uri}&scope=openid%20email%20profile")
+    return redirect(
+        f"{cfg['authorization_endpoint']}?response_type=code&client_id={GOOGLE_CLIENT_ID}&redirect_uri={redirect_uri}&scope=openid%20email%20profile")
 
 @app.route("/auth/google/callback")
 def google_callback():
@@ -175,7 +180,8 @@ def google_callback():
         "code": code, "client_id": GOOGLE_CLIENT_ID, "client_secret": GOOGLE_CLIENT_SECRET,
         "redirect_uri": redirect_uri, "grant_type": "authorization_code"
     }).json()
-    userinfo = requests.get(cfg["userinfo_endpoint"], headers={"Authorization": f"Bearer {token_res['access_token']}"}).json()
+    userinfo = requests.get(cfg["userinfo_endpoint"],
+                            headers={"Authorization": f"Bearer {token_res['access_token']}"}).json()
     session["user"] = {"email": userinfo["email"], "name": userinfo["name"], "picture": userinfo["picture"]}
     return redirect(url_for("home"))
 
@@ -185,20 +191,34 @@ def emergency_locator():
 
 @app.route("/get_nearby_stations")
 def get_nearby_stations():
-    lat = request.args.get('lat')
-    lon = request.args.get('lon')
-    overpass_url = "http://overpass-api.de/api/interpreter"
-    overpass_query = f"""
-    [out:json];
-    node["amenity"="police"](around:5000,{lat},{lon});
-    out body;
-    """
     try:
-        response = requests.get(overpass_url, params={'data': overpass_query}, timeout=10)
-        if response.status_code == 200:
-            return response.json()
-        else:
-            return {"error": "Overpass API returned an error"}, 500
+        lat_raw = request.args.get('lat')
+        lon_raw = request.args.get('lon')
+        if not lat_raw or not lon_raw:
+            return {"error": "Missing coordinates"}, 400
+        lat, lon = float(lat_raw), float(lon_raw)
+        overpass_url = "http://overpass-api.de/api/interpreter"
+        for radius in [2000, 5000, 10000]:
+            overpass_query = f"""
+            [out:json][timeout:15];
+            (node["amenity"="police"](around:{radius},{lat},{lon});
+             way["amenity"="police"](around:{radius},{lat},{lon}););
+            out center;"""
+            try:
+                response = requests.get(overpass_url, params={'data': overpass_query}, timeout=15)
+                data = response.json()
+                elements = data.get('elements', [])
+                if elements:
+                    for el in elements:
+                        s_lat = el.get('lat') or el.get('center', {}).get('lat')
+                        s_lon = el.get('lon') or el.get('center', {}).get('lon')
+                        el['distance'] = haversine(lat, lon, s_lat, s_lon)
+                    elements.sort(key=lambda x: x['distance'])
+                    data['elements'] = elements[:4]
+                    return data
+            except:
+                continue
+        return {"elements": []}
     except Exception as e:
         return {"error": str(e)}, 500
 
@@ -206,6 +226,15 @@ def get_nearby_stations():
 def logout():
     session.clear()
     return redirect(url_for("home"))
+
+@app.route("/rasa_proxy", methods=["POST"])
+def rasa_proxy():
+    rasa_url = "http://127.0.0.1:5005/webhooks/rest/webhook"
+    try:
+        response = requests.post(rasa_url, json=request.json, timeout=15)
+        return response.json(), response.status_code
+    except Exception as e:
+        return {"error": str(e)}, 500
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000, use_reloader=False)

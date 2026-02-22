@@ -34,6 +34,17 @@ body {
   text-decoration: none;
 }
 
+.nav-right-group {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+}
+
 .nav-links a {
   color: #DAFFFB;
   text-decoration: none;
@@ -44,6 +55,14 @@ body {
 
 .nav-links a:hover {
   color: #64CCC5;
+}
+
+.nav-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid #64CCC5;
+  object-fit: cover;
 }
 
 .hamburger {
@@ -74,7 +93,7 @@ body {
   align-items: center;
   border-radius: 12px;
   border-bottom: 1px solid #64CCC5;
-  width: 95%;
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
 }
@@ -82,7 +101,8 @@ body {
 .carousel-wrapper {
   display: flex;
   align-items: center;
-  width: 90%;
+  width: 100%;
+  max-width: 1100px;
   gap: 15px;
   justify-content: center;
 }
@@ -95,8 +115,8 @@ body {
 }
 
 #chart {
-  width: 80%;
-  height: 280px;
+  width: 100%;
+  height: 350px;
   background: #DAFFFB;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
@@ -180,6 +200,11 @@ body {
 @media (max-width: 768px) {
   .hamburger {
     display: flex;
+    order: 1;
+  }
+
+  .nav-avatar {
+    order: 2;
   }
 
   .nav-links {
@@ -209,7 +234,65 @@ body {
     align-items: center;
   }
 
-  #chart {
-    width: 95%;
+  .carousel-wrapper {
+    width: 100%;
+    gap: 5px;
   }
+
+  #chart {
+    width: 100%;
+    height: 300px;
+  }
+}
+
+/* QUICK HELPLINES HOMEPAGE */
+.quick-helplines {
+  padding: 40px 20px;
+  background: #f0fdfc;
+  border-top: 2px solid #64CCC5;
+  border-bottom: 2px solid #64CCC5;
+}
+
+.helpline-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.help-card {
+  background: white;
+  padding: 15px 25px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  min-width: 160px;
+  border: 1px solid #64CCC5;
+}
+
+.help-card span {
+  font-weight: 600;
+  color: #176B87;
+  margin-bottom: 8px;
+}
+
+.dial-btn {
+  background: #e63946;
+  color: white;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+  transition: transform 0.2s;
+}
+
+.dial-btn:hover {
+  transform: scale(1.05);
+  background: #001C30;
 }
