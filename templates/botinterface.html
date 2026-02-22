@@ -7,58 +7,33 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='botinterface.css') }}" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
-    .nav-avatar {
-      width: 30px;
-      border-radius: 50%;
-      margin-left: 10px;
-      vertical-align: middle;
-      border: 1px solid #64CCC5;
-    }
+    .nav-avatar { width: 30px; border-radius: 50%; margin-left: 10px; vertical-align: middle; border: 1px solid #64CCC5; }
+    .station-list-container { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+    .station-card, .complaint-preview { background: #f8fdfd; border: 1px solid #64CCC5; border-radius: 8px; padding: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+    .station-card strong { color: #001C30; display: block; margin-bottom: 5px; }
+    .station-card p { font-size: 13px; color: #176B87; margin: 2px 0; }
+    .nav-btn { margin-top: 8px; width: 100%; padding: 8px; background: #176B87; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; transition: 0.3s; }
+    .nav-btn:hover { background: #001C30; }
+    pre { white-space: pre-wrap; font-size: 12px; font-family: inherit; color: #001C30; }
   </style>
 </head>
 <body>
   {% include 'navbar.html' %}
   <main class="chat-wrapper">
     <div class="chat-box" id="chat-box">
-      <div class="message-row left">
-        <div class="avatar bot">🤖</div>
-        <div class="message">
-          Hello! I am NiDi. Which Section or Article can I help you with today?
-        </div>
-      </div>
+      <div class="message-row left"><div class="avatar bot">🤖</div><div class="message">Hello! I am NiDi. How can I assist you with legal matters today?</div></div>
     </div>
-
     <div class="chat-input">
-      <input type="text" id="user-input" placeholder="Type your message..." onkeypress="handleKeyPress(event)" />
+      <input type="text" id="user-input" placeholder="Type message/സന്ദേശം നൽകുക/अपना संदेश टाइप करें..." onkeypress="handleKeyPress(event)" />
       <button onclick="sendMessage()">➤</button>
     </div>
   </main>
-
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const hamburger = document.getElementById('hamburger');
-        const navMenu = document.getElementById('nav-menu');
-        if (hamburger && navMenu) {
-            hamburger.addEventListener('click', () => {
-                navMenu.classList.toggle('active');
-            });
-        }
-    });
-
     function appendMessage(role, content) {
         const chatBox = document.getElementById('chat-box');
         const side = role === 'user' ? 'right' : 'left';
         const avatar = role === 'user' ? '👤' : '🤖';
-        const avatarClass = role === 'user' ? 'user' : 'bot';
-
-        const msgHtml = `
-            <div class="message-row ${side}">
-                ${role === 'left' || role === 'bot' ? `<div class="avatar ${avatarClass}">${avatar}</div>` : ''}
-                <div class="message">${content}</div>
-                ${role === 'user' ? `<div class="avatar ${avatarClass}">${avatar}</div>` : ''}
-            </div>
-        `;
+        const msgHtml = `<div class="message-row ${side}">${role === 'bot' ? `<div class="avatar bot">${avatar}</div>` : ''}<div class="message">${content}</div>${role === 'user' ? `<div class="avatar user">${avatar}</div>` : ''}</div>`;
         chatBox.insertAdjacentHTML('beforeend', msgHtml);
         chatBox.scrollTop = chatBox.scrollHeight;
     }
@@ -67,67 +42,38 @@
         const input = document.getElementById('user-input');
         const message = input.value.trim();
         if (!message) return;
-
         appendMessage("user", message);
         input.value = '';
-
-        const needsLocation = /police|station|help|emergency|danger/i.test(message);
-
-        if (needsLocation && navigator.geolocation) {
-            appendMessage("bot", "Locating you for accuracy... 📡");
-
-            navigator.geolocation.getCurrentPosition(async (pos) => {
-                const coords = { lat: pos.coords.latitude, lon: pos.coords.longitude };
-                await sendToRasa(message, coords);
-            }, (err) => {
-                console.error(err);
-                sendToRasa(message, null);
-            }, { timeout: 10000 });
-        } else {
-            await sendToRasa(message, null);
-        }
+        const needsLoc = /police|station|help|emergency|പോലീസ്|സ്റ്റേഷൻ|पुलिस|थाना/i.test(message);
+        if (needsLoc && navigator.geolocation) {
+            appendMessage("bot", "Accessing location... 📡");
+            navigator.geolocation.getCurrentPosition(pos => sendToRasa(message, { lat: pos.coords.latitude, lon: pos.coords.longitude }), () => sendToRasa(message, null));
+        } else { sendToRasa(message, null); }
     }
 
     async function sendToRasa(message, coords) {
         try {
-            const payload = { sender: "user", message: message, metadata: {} };
-            if (coords) { payload.metadata = { location: coords }; }
-
-            // Use the proxy route on your Flask server instead of direct IP
-            const response = await fetch('/rasa_proxy', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-
+            const response = await fetch('/rasa_proxy', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sender: "user", message: message, metadata: { session_metadata: { location: coords } } }) });
             const data = await response.json();
             data.forEach(res => {
                 if (res.text) appendMessage("bot", res.text);
-                if (res.custom && res.custom.type === "station_list") {
-                    let listHtml = '<div class="station-list-container">';
-                    res.custom.data.forEach(station => {
-                        listHtml += `
-                            <div class="station-card">
-                                <strong>📍 ${station.name}</strong>
-                                <p>📏 Distance: ${station.distance} km</p>
-                                <p>🏠 ${station.address}</p>
-                                <p>📞 ${station.phone}</p>
-                                <button class="nav-btn" onclick="window.open('https://www.google.com/maps/search/?api=1&query=${station.lat},${station.lon}')">Navigate</button>
-                            </div>`;
+                const custom = res.custom || res.json_message;
+                if (custom && custom.type === "station_list") {
+                    let html = '<div class="station-list-container">';
+                    custom.data.forEach(s => { html += `<div class="station-card"><strong>📍 ${s.name}</strong><p>📏 ${s.distance} km</p><p>📞 ${s.phone}</p><button class="nav-btn" onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=${s.lat},${s.lon}')">Navigate</button></div>`; });
+                    appendMessage("bot", html + '</div>');
+                }
+                if (custom && custom.type === "complaint_draft") {
+                    fetch('/generate_complaint', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(custom.data) })
+                    .then(r => r.json()).then(mail => {
+                        appendMessage("bot", `<div class="complaint-preview"><p><strong>Draft Preview:</strong></p><pre>${mail.preview}</pre><button class="nav-btn" onclick="window.location.href='${mail.mailto_link}'">📧 Open in Gmail</button></div>`);
                     });
-                    listHtml += '</div>';
-                    appendMessage("bot", listHtml);
                 }
             });
-        } catch (error) {
-            appendMessage("bot", "Connection error with the legal brain.");
-        }
+        } catch (e) { appendMessage("bot", "Connection error."); }
     }
-
-    function handleKeyPress(event) {
-        if (event.key === 'Enter') { sendMessage(); }
-    }
+    function handleKeyPress(e) { if (e.key === 'Enter') sendMessage(); }
   </script>
-{% include 'footer.html' %}
+  {% include 'footer.html' %}
 </body>
 </html>
