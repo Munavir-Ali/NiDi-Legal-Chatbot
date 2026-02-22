@@ -7,9 +7,18 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
-    #map { height: 60vh; width: 100%; border-radius: 12px; border: 3px solid #64CCC5; margin-top: 20px; }
+    #map-container { position: relative; width: 100%; margin-top: 20px; }
+    #map { height: 60vh; width: 100%; border-radius: 12px; border: 3px solid #64CCC5; }
     .station-list { margin-top: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; }
-    .station-card { background: white; padding: 15px; border-radius: 8px; border-left: 5px solid #e63946; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    .station-card { background: white; padding: 15px; border-radius: 8px; border-left: 5px solid #176B87; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    .locate-btn {
+      position: absolute; top: 15px; right: 15px; z-index: 1000;
+      background: white; border: 2px solid #176B87; border-radius: 50%;
+      width: 45px; height: 45px; cursor: pointer; font-size: 22px;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: 0.3s;
+    }
+    .locate-btn:hover { background: #DAFFFB; transform: scale(1.1); }
   </style>
 </head>
 <body>
@@ -31,41 +40,75 @@
 
   <main class="main" style="padding: 20px;">
     <h2 style="color: #001C30; text-align: center;">Nearest Police Stations</h2>
-    <div id="map"></div>
+    <div id="map-container">
+      <button class="locate-btn" onclick="locateMe()" title="Find My Location">🎯</button>
+      <div id="map"></div>
+    </div>
     <div id="station-results" class="station-list"></div>
   </main>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
     let map = L.map('map').setView([20.5937, 78.9629], 5);
+    let userMarker, stationMarkers = [];
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(pos => {
-        const { latitude: lat, longitude: lon } = pos.coords;
-        map.setView([lat, lon], 14);
-        L.marker([lat, lon]).addTo(map).bindPopup("Your Location").openPopup();
+    function locateMe() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(pos => {
+          const { latitude: lat, longitude: lon } = pos.coords;
 
-        fetch(`/get_nearby_stations?lat=${lat}&lon=${lon}`)
-          .then(r => r.json())
-          .then(data => {
-            const list = document.getElementById('station-results');
-            data.elements.forEach(el => {
-              const marker = L.marker([el.lat, el.lon]).addTo(map);
-              const name = el.tags.name || "Police Station";
-              marker.bindPopup(`<b>${name}</b>`);
+          if (userMarker) map.removeLayer(userMarker);
+          userMarker = L.marker([lat, lon]).addTo(map).bindPopup("<b>Your Current Location</b>").openPopup();
+          map.setView([lat, lon], 15);
 
-              const card = document.createElement('div');
-              card.className = 'station-card';
-              card.innerHTML = `
-                <h4>${name}</h4>
-                <button class="cta-btn" style="padding: 8px 15px; font-size: 14px; margin-top:10px;"
-                        onclick="window.open('https://www.google.com/maps?q=${el.lat},${el.lon}')">Navigate</button>`;
-              list.appendChild(card);
-            });
-          });
-      });
+          fetchStations(lat, lon);
+        }, err => {
+          alert("Error getting location. Please enable GPS permissions.");
+        }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
+      }
     }
+
+    function fetchStations(lat, lon) {
+      fetch(`/get_nearby_stations?lat=${lat}&lon=${lon}`)
+        .then(r => r.json())
+        .then(data => {
+          const list = document.getElementById('station-results');
+          list.innerHTML = "";
+          stationMarkers.forEach(m => map.removeLayer(m));
+          stationMarkers = [];
+
+          const elements = data.elements || [];
+
+          if (elements.length === 0) {
+            list.innerHTML = "<p style='text-align:center; width:100%;'>No stations found within 5km.</p>";
+            return;
+          }
+
+          elements.forEach(el => {
+            const s_lat = el.lat || el.center.lat;
+            const s_lon = el.lon || el.center.lon;
+            const tags = el.tags || {};
+            const name = tags.name || "Police Station";
+            const address = `${tags['addr:street'] || ''} ${tags['addr:suburb'] || ''}`.strip() || "Address not available";
+
+            const marker = L.marker([s_lat, s_lon]).addTo(map);
+            marker.bindPopup(`<b>${name}</b>`);
+            stationMarkers.push(marker);
+
+            const card = document.createElement('div');
+            card.className = 'station-card';
+            card.innerHTML = `
+              <h4 style="color:#001C30;">📍 ${name}</h4>
+              <p style="font-size:14px; margin: 5px 0;">${address}</p>
+              <button class="cta-btn" style="padding: 8px 15px; font-size: 14px; margin-top:10px; background:#176B87; border:none; color:white; border-radius:5px; cursor:pointer;"
+                      onclick="window.open('https://www.google.com/maps/search/?api=1&query=${s_lat},${s_lon}')">Navigate</button>`;
+            list.appendChild(card);
+          });
+        });
+    }
+
+    window.onload = locateMe;
   </script>
 </body>
 </html>

@@ -207,3 +207,47 @@ body {
     height: calc(100vh - 100px);
   }
 }
+
+.station-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.station-card {
+  background: #f8fdfd;
+  border: 1px solid #64CCC5;
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.station-card strong {
+  color: #001C30;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.station-card p {
+  font-size: 13px;
+  color: #176B87;
+  margin: 2px 0;
+}
+
+.nav-btn {
+  margin-top: 8px;
+  width: 100%;
+  padding: 6px;
+  background: #176B87;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: 0.3s;
+}
+
+.nav-btn:hover {
+  background: #001C30;
+}

@@ -7,15 +7,6 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='botinterface.css') }}" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
-    .map-bubble {
-      width: 100%;
-      max-width: 300px;
-      height: 200px;
-      border-radius: 10px;
-      margin: 10px 0;
-      border: 2px solid #64CCC5;
-      z-index: 1;
-    }
     .nav-avatar {
       width: 30px;
       border-radius: 50%;
@@ -92,105 +83,68 @@
         chatBox.scrollTop = chatBox.scrollHeight;
     }
 
-    function displayMapInChat(lat, lon, name) {
-        const chatId = 'map-' + Date.now();
-        appendMessage("bot", `
-            <div id="${chatId}" class="map-bubble"></div>
-            <p><b>${name}</b></p>
-            <button class="cta-btn" style="width:100%; padding: 8px; background: #176B87; color: white; border: none; border-radius: 5px; cursor: pointer;"
-                    onclick="window.open('https://www.google.com/maps?q=$${lat},${lon}')">
-                Navigate
-            </button>
-        `);
+    async function sendMessage() {
+        const input = document.getElementById('user-input');
+        const message = input.value.trim();
+        if (!message) return;
 
-        setTimeout(() => {
-            let chatMap = L.map(chatId, {zoomControl: false}).setView([lat, lon], 15);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(chatMap);
-            L.marker([lat, lon]).addTo(chatMap).bindPopup(name);
-        }, 200);
+        appendMessage("user", message);
+        input.value = '';
+
+        const needsLocation = /police|station|help|emergency|danger/i.test(message);
+
+        if (needsLocation && navigator.geolocation) {
+            appendMessage("bot", "Locating you for accuracy... 📡");
+
+            navigator.geolocation.getCurrentPosition(async (pos) => {
+                const coords = { lat: pos.coords.latitude, lon: pos.coords.longitude };
+                await sendToRasa(message, coords);
+            }, (err) => {
+                console.error(err);
+                sendToRasa(message, null);
+            }, { timeout: 10000 });
+        } else {
+            await sendToRasa(message, null);
+        }
     }
 
-    async function sendTextOnly(message) {
-        const chatBox = document.getElementById('chat-box');
+    async function sendToRasa(message, coords) {
         try {
+            const payload = { sender: "user", message: message, metadata: {} };
+            if (coords) { payload.metadata = { location: coords }; }
+
             const response = await fetch('http://127.0.0.1:5005/webhooks/rest/webhook', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    sender: "user",
-                    message: message
-                })
+                body: JSON.stringify(payload)
             });
+
             const data = await response.json();
             data.forEach(res => {
                 if (res.text) appendMessage("bot", res.text);
-                if (res.custom) displayMapInChat(res.custom.lat, res.custom.lon, res.custom.name);
+                if (res.custom && res.custom.type === "station_list") {
+                    let listHtml = '<div class="station-list-container">';
+                    res.custom.data.forEach(station => {
+                        listHtml += `
+                            <div class="station-card">
+                                <strong>📍 ${station.name}</strong>
+                                <p>📏 Distance: ${station.distance} km</p>
+                                <p>🏠 ${station.address}</p>
+                                <p>📞 ${station.phone}</p>
+                                <button class="nav-btn" onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=${station.lat},${station.lon}')">Navigate</button>
+                            </div>`;
+                    });
+                    listHtml += '</div>';
+                    appendMessage("bot", listHtml);
+                }
             });
         } catch (error) {
-            appendMessage("bot", "Connection error.");
+            appendMessage("bot", "Connection error with the legal brain.");
         }
     }
-
-   async function sendMessage() {
-    const input = document.getElementById('user-input');
-    const message = input.value.trim();
-    if (!message) return;
-
-    appendMessage("user", message);
-    input.value = '';
-
-    // If the message is about help or police, we MUST get location first
-    const needsLocation = /police|station|help|emergency|danger/i.test(message);
-
-    if (needsLocation && navigator.geolocation) {
-        appendMessage("bot", "Locating you for accuracy... 📡"); // Feedback for the user
-
-        navigator.geolocation.getCurrentPosition(async (pos) => {
-            const coords = { lat: pos.coords.latitude, lon: pos.coords.longitude };
-            await sendToRasa(message, coords);
-        }, (err) => {
-            console.error(err);
-            sendToRasa(message, null);
-        }, { timeout: 10000 });
-    } else {
-        await sendToRasa(message, null);
-    }
-}
-
-async function sendToRasa(message, coords) {
-    try {
-        const payload = {
-            sender: "user",
-            message: message
-        };
-
-        // Only add metadata if we actually have coords
-        if (coords) {
-            payload.metadata = { location: coords };
-        }
-
-        const response = await fetch('http://127.0.0.1:5005/webhooks/rest/webhook', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        });
-
-        const data = await response.json();
-        data.forEach(res => {
-            if (res.text) appendMessage("bot", res.text);
-            if (res.custom) {
-                displayMapInChat(res.custom.lat, res.custom.lon, res.custom.name);
-            }
-        });
-    } catch (error) {
-        appendMessage("bot", "Connection error with the legal brain.");
-    }
-}
 
     function handleKeyPress(event) {
-        if (event.key === 'Enter') {
-            sendMessage();
-        }
+        if (event.key === 'Enter') { sendMessage(); }
     }
   </script>
 </body>

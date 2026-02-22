@@ -17,7 +17,6 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "dev-fallback-key")
 
-REDIRECT_URI = "http://127.0.0.1:5000/auth/google/callback"
 GOOGLE_DISCOVERY_URL = "https://accounts.google.com/.well-known/openid-configuration"
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
@@ -30,11 +29,19 @@ try:
     client = MongoClient(MONGO_URI, tls=True, tlsAllowInvalidCertificates=True, serverSelectionTimeoutMS=5000)
     db = client["NiDi_DB"]
     client.admin.command('ping')
-except Exception:
-    sys.exit(1)
+    print("✅ Connected to MongoDB successfully!")
+except Exception as e:
+    print(f"❌ MongoDB Connection Failed: {e}")
+    # sys.exit(1)  <-- Comment this out for now so the app runs anyway
 
 def get_google_provider_cfg():
     return requests.get(GOOGLE_DISCOVERY_URL).json()
+
+def get_google_redirect_uri():
+    uri = request.host_url.rstrip('/')
+    if "ngrok-free.app" in uri:
+        uri = uri.replace("http://", "https://")
+    return f"{uri}/auth/google/callback"
 
 @app.context_processor
 def inject_user():
@@ -156,42 +163,44 @@ def chat():
 @app.route("/auth/google")
 def google_login():
     cfg = get_google_provider_cfg()
-    return redirect(f"{cfg['authorization_endpoint']}?response_type=code&client_id={GOOGLE_CLIENT_ID}&redirect_uri={REDIRECT_URI}&scope=openid%20email%20profile")
+    redirect_uri = get_google_redirect_uri()
+    return redirect(f"{cfg['authorization_endpoint']}?response_type=code&client_id={GOOGLE_CLIENT_ID}&redirect_uri={redirect_uri}&scope=openid%20email%20profile")
 
 @app.route("/auth/google/callback")
 def google_callback():
     code = request.args.get("code")
     cfg = get_google_provider_cfg()
+    redirect_uri = get_google_redirect_uri()
     token_res = requests.post(cfg["token_endpoint"], data={
         "code": code, "client_id": GOOGLE_CLIENT_ID, "client_secret": GOOGLE_CLIENT_SECRET,
-        "redirect_uri": REDIRECT_URI, "grant_type": "authorization_code"
+        "redirect_uri": redirect_uri, "grant_type": "authorization_code"
     }).json()
     userinfo = requests.get(cfg["userinfo_endpoint"], headers={"Authorization": f"Bearer {token_res['access_token']}"}).json()
     session["user"] = {"email": userinfo["email"], "name": userinfo["name"], "picture": userinfo["picture"]}
     return redirect(url_for("home"))
 
-
-import requests
-
-
 @app.route("/emergency-locator")
 def emergency_locator():
-    # This page is accessible to everyone
     return render_template("locator.html")
 
 @app.route("/get_nearby_stations")
 def get_nearby_stations():
     lat = request.args.get('lat')
     lon = request.args.get('lon')
-    # Overpass API query for police stations within 5000 meters
     overpass_url = "http://overpass-api.de/api/interpreter"
     overpass_query = f"""
     [out:json];
     node["amenity"="police"](around:5000,{lat},{lon});
     out body;
     """
-    response = requests.get(overpass_url, params={'data': overpass_query})
-    return response.json()
+    try:
+        response = requests.get(overpass_url, params={'data': overpass_query}, timeout=10)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            return {"error": "Overpass API returned an error"}, 500
+    except Exception as e:
+        return {"error": str(e)}, 500
 
 @app.route("/logout")
 def logout():

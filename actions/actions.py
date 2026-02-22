@@ -5,6 +5,17 @@ import pandas as pd
 import os
 import re
 import requests
+from math import radians, cos, sin, asin, sqrt
+
+
+def haversine(lat1, lon1, lat2, lon2):
+    lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
+    dlon = lon2 - lon1
+    dlat = lat2 - lat1
+    a = sin(dlat / 2) ** 2 + cos(lat1) * cos(lat2) * sin(dlon / 2) ** 2
+    c = 2 * asin(sqrt(a))
+    km = 6371 * c
+    return km
 
 
 class ActionGetLegalDescription(Action):
@@ -110,73 +121,61 @@ class ActionFindNearbyPolice(Action):
     def name(self) -> Text:
         return "action_find_nearby_police"
 
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-
+    def run(self, dispatcher, tracker, domain):
         metadata = tracker.get_slot("session_metadata") or {}
         location = metadata.get("location")
+
+        if not location:
+            events = tracker.current_state().get("events", [])
+            for e in reversed(events):
+                if e.get("event") == "user":
+                    metadata = e.get("metadata", {})
+                    location = metadata.get("location")
+                    break
 
         if not location:
             dispatcher.utter_message(text="I need your location permission to find the nearest station.")
             return []
 
         lat, lon = location['lat'], location['lon']
-
         overpass_url = "http://overpass-api.de/api/interpreter"
         overpass_query = f"""
         [out:json];
-        node["amenity"="police"](around:5000,{lat},{lon});
-        out body;
+        (
+          node["amenity"="police"](around:5000,{lat},{lon});
+          way["amenity"="police"](around:5000,{lat},{lon});
+        );
+        out center;
         """
 
         try:
-            response = requests.get(overpass_url, params={'data': overpass_query})
-            data = response.json()
+            response = requests.get(overpass_url, params={'data': overpass_query}, timeout=10)
+            elements = response.json().get('elements', [])
+            stations = []
 
-            if data['elements']:
-                station = data['elements'][0]
-                name = station.get('tags', {}).get('name', 'Nearest Police Station')
-                dispatcher.utter_message(
-                    text=f"I found the nearest station: {name}",
-                    json_message={
-                        "lat": station['lat'],
-                        "lon": station['lon'],
-                        "name": name
-                    }
-                )
+            for el in elements:
+                s_lat = el.get('lat') or el.get('center', {}).get('lat')
+                s_lon = el.get('lon') or el.get('center', {}).get('lon')
+                tags = el.get('tags', {})
+                dist = haversine(lat, lon, s_lat, s_lon)
+
+                stations.append({
+                    "name": tags.get("name", "Police Station"),
+                    "address": f"{tags.get('addr:street', '')} {tags.get('addr:suburb', '')}".strip() or "Address not listed",
+                    "phone": tags.get("contact:phone") or tags.get("phone") or "Contact not available",
+                    "lat": s_lat, "lon": s_lon, "distance": round(dist, 2)
+                })
+
+            stations.sort(key=lambda x: x['distance'])
+
+            if not stations:
+                dispatcher.utter_message(text="I couldn't find any police stations within 5km.")
             else:
-                dispatcher.utter_message(text="No police stations found within 5km.")
-        except Exception:
-            dispatcher.utter_message(text="Error fetching location data.")
+                dispatcher.utter_message(
+                    text="Here are the nearest police stations to you:",
+                    json_message={"type": "station_list", "data": stations[:3]}
+                )
+        except:
+            dispatcher.utter_message(text="Service error while searching for stations.")
 
         return []
-
-
-# This files contains your custom actions which can be used to run
-# custom Python code.
-#
-# See this guide on how to implement these action:
-# https://rasa.com/docs/rasa/custom-actions
-
-
-# This is a simple example for a custom action which utters "Hello World!"
-
-# from typing import Any, Text, Dict, List
-#
-# from rasa_sdk import Action, Tracker
-# from rasa_sdk.executor import CollectingDispatcher
-#
-#
-# class ActionHelloWorld(Action):
-#
-#     def name(self) -> Text:
-#         return "action_hello_world"
-#
-#     def run(self, dispatcher: CollectingDispatcher,
-#             tracker: Tracker,
-#             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-#
-#         dispatcher.utter_message(text="Hello World!")
-#
-#         return []
