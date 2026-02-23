@@ -6,6 +6,11 @@ rules:
       - intent: ask_legal_info
       - action: action_get_legal_description
 
+  - rule: Activate Police Locator
+    steps:
+      - intent: find_police
+      - action: action_find_nearby_police
+
   - rule: Say goodbye anytime the user says goodbye
     steps:
       - intent: goodbye
@@ -15,3 +20,19 @@ rules:
     steps:
       - intent: bot_challenge
       - action: utter_iamabot
+
+  - rule: Activate Complaint Form
+    steps:
+       - intent: request_complaint
+       - action: complaint_form
+       - active_loop: complaint_form
+
+  - rule: Submit Complaint Form
+    condition:
+       - active_loop: complaint_form
+    steps:
+       - action: complaint_form
+       - active_loop: null
+       - slot_was_set:
+         - requested_slot: null
+       - action: action_prepare_complaint

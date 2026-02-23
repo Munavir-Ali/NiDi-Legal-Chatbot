@@ -185,5 +185,12 @@ def logout():
     session.clear()
     return redirect(url_for("home"))
 
+@app.route("/locator")
+def locator():
+    """Renders the emergency police station locator page."""
+    if "user" not in session:
+        return redirect(url_for("signup_view"))
+    return render_template("locator.html")
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000, use_reloader=False)

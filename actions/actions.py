@@ -1,12 +1,12 @@
 from typing import Any, Text, Dict, List
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
+from rasa_sdk.forms import ValidationAction
 import pandas as pd
 import os
 import re
 import requests
 from math import radians, cos, sin, asin, sqrt
-
 
 def haversine(lat1, lon1, lat2, lon2):
     lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
@@ -16,7 +16,6 @@ def haversine(lat1, lon1, lat2, lon2):
     c = 2 * asin(sqrt(a))
     km = 6371 * c
     return km
-
 
 class ActionGetLegalDescription(Action):
     def name(self) -> Text:
@@ -184,3 +183,55 @@ class ActionFindNearbyPolice(Action):
             )
 
         return []
+
+class ActionPrepareComplaint(Action):
+    def name(self) -> Text:
+        return "action_prepare_complaint"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        # Get the data the bot collected from the user
+        incident = tracker.get_slot("incident_type") or "incident"
+        details = tracker.get_slot("incident_details") or "No details provided"
+        location = tracker.get_slot("incident_location") or "the specified area"
+
+        # Construct the professional strings the JS is looking for
+        to_field = f"Station House Officer,\nPolice Station, {location}"
+        subject_field = f"Formal Complaint regarding {incident}"
+        body_field = (
+            f"I wish to report a {incident} that occurred at {location}. "
+            f"Details: {details}. "
+            f"I request you to kindly investigate this matter and take appropriate action."
+        )
+
+        # Dispatch with the EXACT keys 'to', 'subject', and 'body'
+        dispatcher.utter_message(
+            text=f"I have generated your draft for {incident}.",
+            json_message={
+                "type": "complaint_draft",
+                "data": {
+                    "to": to_field,
+                    "subject": subject_field,
+                    "body": body_field
+                }
+            }
+        )
+        return []
+
+class ValidateComplaintForm(ValidationAction):
+    def name(self) -> Text:
+        return "validate_complaint_form"
+
+    def validate_incident_details(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> Dict[Text, Any]:
+        if len(slot_value) < 10:
+            dispatcher.utter_message(text="Please provide a more detailed description so the draft is accurate.")
+            return {"incident_details": None}
+        return {"incident_details": slot_value}

@@ -6,22 +6,12 @@
   <title>Chat | NIDI LawBot</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='botinterface.css') }}" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <style>
-    .nav-avatar { width: 30px; border-radius: 50%; margin-left: 10px; vertical-align: middle; border: 1px solid #64CCC5; }
-    .station-list-container { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
-    .station-card, .complaint-preview { background: #f8fdfd; border: 1px solid #64CCC5; border-radius: 8px; padding: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-    .station-card strong { color: #001C30; display: block; margin-bottom: 5px; }
-    .station-card p { font-size: 13px; color: #176B87; margin: 2px 0; }
-    .nav-btn { margin-top: 8px; width: 100%; padding: 8px; background: #176B87; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; transition: 0.3s; }
-    .nav-btn:hover { background: #001C30; }
-    pre { white-space: pre-wrap; font-size: 12px; font-family: inherit; color: #001C30; }
-  </style>
 </head>
 <body>
   {% include 'navbar.html' %}
   <main class="chat-wrapper">
     <div class="chat-box" id="chat-box">
-      <div class="message-row left"><div class="avatar bot">🤖</div><div class="message">Hello! I am NiDi. How can I assist you with legal matters today?</div></div>
+      <div class="message-row left"><div class="message">Hello! I am NiDi. How can I assist you with legal matters today?</div></div>
     </div>
     <div class="chat-input">
       <input type="text" id="user-input" placeholder="Type message/സന്ദേശം നൽകുക/अपना संदेश टाइप करें..." onkeypress="handleKeyPress(event)" />
@@ -32,8 +22,7 @@
     function appendMessage(role, content) {
         const chatBox = document.getElementById('chat-box');
         const side = role === 'user' ? 'right' : 'left';
-        const avatar = role === 'user' ? '👤' : '🤖';
-        const msgHtml = `<div class="message-row ${side}">${role === 'bot' ? `<div class="avatar bot">${avatar}</div>` : ''}<div class="message">${content}</div>${role === 'user' ? `<div class="avatar user">${avatar}</div>` : ''}</div>`;
+        const msgHtml = `<div class="message-row ${side}"><div class="message">${content}</div></div>`;
         chatBox.insertAdjacentHTML('beforeend', msgHtml);
         chatBox.scrollTop = chatBox.scrollHeight;
     }
@@ -64,10 +53,10 @@
                     appendMessage("bot", html + '</div>');
                 }
                 if (custom && custom.type === "complaint_draft") {
-                    fetch('/generate_complaint', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(custom.data) })
-                    .then(r => r.json()).then(mail => {
-                        appendMessage("bot", `<div class="complaint-preview"><p><strong>Draft Preview:</strong></p><pre>${mail.preview}</pre><button class="nav-btn" onclick="window.location.href='${mail.mailto_link}'">📧 Open in Gmail</button></div>`);
-                    });
+                    const d = custom.data;
+                    const previewText = `To,\n${d.to}\n\nSubject: ${d.subject}\n\n${d.body}`;
+                    const mailtoLink = `https://mail.google.com/mail/?view=cm&fs=1&to=&su=${encodeURIComponent(d.subject)}&body=${encodeURIComponent("To,\n" + d.to + "\n\n" + d.body)}`;
+                    appendMessage("bot", `<div class="complaint-preview"><p><strong>Formal Draft Preview:</strong></p><pre>${previewText}</pre><button class="nav-btn" onclick="window.open('${mailtoLink}', '_blank')">📧 Open in Gmail</button></div>`);
                 }
             });
         } catch (e) { appendMessage("bot", "Connection error."); }

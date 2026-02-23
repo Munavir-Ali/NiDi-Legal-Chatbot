@@ -16,6 +16,14 @@ nlu:
     - goodmorning
     - goodevening
     - good afternoon
+    - hi nidi
+    - namaste
+    - greetings
+    - hello assistant
+    - wake up nidi
+    - anyone there?
+    - start chat
+    - hello law bot
 
 - intent: goodbye
   examples: |
@@ -29,66 +37,15 @@ nlu:
     - see you around
     - bye bye
     - see you later
-
-- intent: affirm
-  examples: |
-    - yes
-    - y
-    - indeed
-    - of course
-    - that sounds good
-    - correct
-
-- intent: deny
-  examples: |
-    - no
-    - n
-    - never
-    - I don't think so
-    - don't like that
-    - no way
-    - not really
-
-- intent: mood_great
-  examples: |
-    - perfect
-    - great
-    - amazing
-    - feeling like a king
-    - wonderful
-    - I am feeling very good
-    - I am great
-    - I am amazing
-    - I am going to save the world
-    - super stoked
-    - extremely good
-    - so so perfect
-    - so good
-    - so perfect
-
-- intent: mood_unhappy
-  examples: |
-    - my day was horrible
-    - I am sad
-    - I don't feel very well
-    - I am disappointed
-    - super sad
-    - I'm so sad
-    - sad
-    - very sad
-    - unhappy
-    - not good
-    - not very good
-    - extremly sad
-    - so saad
-    - so sad
-
-- intent: bot_challenge
-  examples: |
-    - are you a bot?
-    - are you a human?
-    - am I talking to a bot?
-    - am I talking to a human?
+    - talk to you later
+    - farewell
+    - i am leaving
+    - end session
+    - exit chat
+    - stop bot
+    - shut down
+    - see ya
+    - thanks bye
 
 - intent: find_police
   examples: |
@@ -97,3 +54,174 @@ nlu:
     - help me find a station
     - nearby police station
     - I need help
+    - where is the closest police post?
+    - locate the station house officer office
+    - I need to find the police right now
+    - show me police stations around me
+    - find a cop station
+    - where can I find the authorities?
+    - I am in danger help me find a station
+    - take me to the nearest station
+    - search for police stations in this area
+    - where is the police headquarters?
+    - is there a police booth nearby?
+    - find me the local thana
+    - where is the nearest police station from my location?
+    - show police stations on the map
+    - I need to report something at a station where is it?
+    - navigate to police station
+    - closest law enforcement office
+    - I need to reach a police outpost
+    - direct me to the nearest police station
+    - where is the police station in this city?
+    - find the police department
+    - locate nearby police force
+    - I need urgent police assistance find station
+    - police station location near me
+    - where is the sub-inspector's office?
+    - take me to the nearest thana
+    - where is the control room?
+    - find a PCR van nearby
+    - show police chowki near my location
+    - track nearest police station
+    - i need to go to the police station immediately
+    - pinpoint local police station
+    - where is the commissioner office?
+    - help me find the city police station
+    - nearest police aid post
+    - guide me to the nearest police station
+    - find the nearest SHO office
+    - how far is the police station?
+    - show me the route to the nearest police station
+    - show police help desk near me
+    - find the nearest police helpline center
+    - is there a police station in [Kakkanad](incident_location)?
+    - locate police station in [Aluva](incident_location)
+    - find station near [MG Road](incident_location)
+    - where is the police station near [Lulu Mall](incident_location)?
+
+- intent: request_complaint
+  examples: |
+    - I want to draft a mail
+    - I need to report a [theft](incident_type)
+    - Help me write a complaint about [harassment](incident_type)
+    - I want to report an [accident](incident_type) in [Kochi](incident_location)
+    - Draft a mail regarding a [stolen phone](incident_type) at [MG Road](incident_location)
+    - I need to report [illegal parking](incident_type) near [Central Mall](incident_location)
+    - Someone [stole my bag](incident_type) at the [bus stand](incident_location)
+    - Help me file a report for [fraud](incident_type)
+    - I want to complain about [online fraud](incident_type)
+    - [Lost my wallet](incident_type) near [Palarivattom](incident_location)
+    - Can you draft a letter for [chain snatching](incident_type)?
+    - I need an email for [domestic violence](incident_type) report
+    - [Someone hit my car](incident_type) at [Marine Drive](incident_location)
+    - Write a report about [shoplifting](incident_type) in [Lulu Mall](incident_location)
+    - I want to file a complaint for [cyber bullying](incident_type)
+    - Help me report [extortion](incident_type)
+    - I need to draft a legal notice for [cheating](incident_type)
+    - [Pickpocketing](incident_type) happened at [Railway Station](incident_location)
+    - Make a draft for [trespassing](incident_type) at my [office](incident_location)
+    - I want to send an email about [physical assault](incident_type)
+    - [House burglary](incident_type) occurred at [Kakkanad](incident_location)
+    - Report [stalking](incident_type) incident
+    - Draft a complaint for [reckless driving](incident_type)
+    - Write a letter for [noise pollution](incident_type) in [Vytilla](incident_location)
+    - I need to report a [missing person](incident_type)
+    - Draft a mail for [identity theft](incident_type)
+    - Help me report [property damage](incident_type) at [Aluva](incident_location)
+    - I need to report [public nuisance](incident_type)
+    - Create a draft for [bribery](incident_type) complaint
+    - Report [drug peddling](incident_type) near [school area](incident_location)
+    - Draft a complaint for [kidnapping](incident_type)
+    - [Mobile snatching](incident_type) reported at [Park Avenue](incident_location)
+    - I want to report [illegal construction](incident_type) in [Edappally](incident_location)
+    - Draft a mail for [missing documents](incident_type)
+    - Someone is [threatening](incident_type) me at [home](incident_location)
+    - Help me report [cyber stalking](incident_type)
+    - I want to file a [defamation](incident_type) complaint
+    - Draft an email for [land dispute](incident_type)
+    - Report [dowry harassment](incident_type)
+    - [Bike theft](incident_type) at [college parking](incident_location)
+    - Draft a letter for [illegal mining](incident_type)
+    - I need to report [corruption](incident_type)
+    - Draft a complaint for [wrongful confinement](incident_type)
+    - [Vehicle vandalism](incident_type) in [Fort Kochi](incident_location)
+    - Report [unauthorized entry](incident_type)
+    - Help me report [child labor](incident_type)
+    - I want to report [illegal trade](incident_type)
+    - Draft a mail for [missing gold chain](incident_type)
+    - Report [bank fraud](incident_type) incident
+    - Draft a letter about [animal cruelty](incident_type)
+    - I need to report [forgery](incident_type)
+    - Draft a complaint for [defacing property](incident_type)
+
+- intent: ask_legal_info
+  examples: |
+    - what is [302](legal_section)?
+    - explain [Article 21](legal_section)
+    - tell me about [Section 140](legal_section)
+    - what is [IPC 302](legal_section)?
+    - tell me about [section 376 of IPC](legal_section)
+    - what does [BNS 302](legal_section) say?
+    - what is [section 365 in CRPC](legal_section)?
+    - show me [BSA section 1](legal_section)
+    - [Article 14](legal_section)
+    - [Section 498A](legal_section)
+    - [498A](legal_section)
+    - [IPC 124A](legal_section)
+    - [124A](legal_section)
+    - explain [BNS 103](legal_section)
+    - what is [IPC 124A](legal_section)?
+    - I want to know about [Section 498A](legal_section)
+    - I want to know about [498A](legal_section)
+    - tell me about [IPC 124A](legal_section)
+    - What is the punishment under [Section 307](legal_section)?
+    - explain [Article 19](legal_section) of constitution
+    - what does [Section 420](legal_section) mean?
+    - details on [IPC 304B](legal_section)
+    - explain [Section 506](legal_section) of IPC
+    - tell me about [Article 32](legal_section)
+    - what is [Section 34](legal_section) common intention?
+    - define [Section 120B](legal_section) conspiracy
+    - explain [IPC 354](legal_section)
+    - What is [Article 226](legal_section) writ?
+    - tell me about [Section 144](legal_section)
+    - what is [BNS 113](legal_section)?
+    - explain [Section 2](legal_section) of BSA
+    - details of [Article 15](legal_section)
+    - what is [IPC 295A](legal_section)?
+    - explain [Section 84](legal_section) unsound mind
+    - what is [Article 44](legal_section) UCC?
+    - explain [Section 300](legal_section) murder definition
+    - what is [Article 20](legal_section) double jeopardy?
+    - tell me about [Section 41](legal_section) crpc
+    - what is [Section 138](legal_section) NI Act?
+    - explain [Section 375](legal_section)
+    - what is [Article 370](legal_section)?
+    - explain [BNS 74](legal_section)
+    - what is [IPC 411](legal_section)?
+    - tell me about [Section 161](legal_section)
+    - explain [Article 51A](legal_section) duties
+    - what is [Section 100](legal_section) private defense?
+    - explain [BNS 111](legal_section) organized crime
+    - what is [Section 154](legal_section) FIR?
+    - tell me about [Article 25](legal_section) religious freedom
+    - what is [IPC 323](legal_section)?
+    - explain [Section 377](legal_section)
+    - details on [Section 306](legal_section)
+    - what is [Article 1](legal_section)?
+    - explain [Section 441](legal_section)
+    - what is [IPC 509](legal_section)?
+    - define [Section 107](legal_section) abetment
+    - explain [BNS 64](legal_section) rape punishment
+    - what is [Article 21A](legal_section) education?
+    - tell me about [Section 149](legal_section) unlawful assembly
+    - explain [Section 406](legal_section) criminal breach of trust
+    - what is [Article 300A](legal_section) property?
+    - define [Section 124](legal_section)
+    - what is [IPC 304A](legal_section) negligence?
+    - tell me about [Article 17](legal_section) untouchability
+    - explain [BNS 187](legal_section)
+    - what is [Section 10](legal_section)?
+    - details of [Article 360](legal_section) financial emergency
+    - explain [Section 299](legal_section) culpable homicide

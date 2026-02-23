@@ -33,3 +33,15 @@ stories:
   steps:
   - intent: find_police
   - action: action_find_nearby_police
+
+- story: user fills complaint form
+  steps:
+  - intent: request_complaint
+  - action: complaint_form
+  - active_loop: complaint_form
+  - slot_was_set:
+      - requested_slot: incident_type
+  - active_loop: null
+  - slot_was_set:
+      - requested_slot: null
+  - action: action_prepare_complaint
