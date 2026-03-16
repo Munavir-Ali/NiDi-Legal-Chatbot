@@ -19,6 +19,18 @@
     </div>
   </main>
   <script>
+    window.onload = async function() {
+        try {
+            await fetch('/rasa_proxy', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ sender: "user", message: "/restart" })
+            });
+        } catch (e) {
+            console.log("Restart failed");
+        }
+    };
+
     function appendMessage(role, content) {
         const chatBox = document.getElementById('chat-box');
         const side = role === 'user' ? 'right' : 'left';
@@ -49,13 +61,13 @@
                 const custom = res.custom || res.json_message;
                 if (custom && custom.type === "station_list") {
                     let html = '<div class="station-list-container">';
-                    custom.data.forEach(s => { html += `<div class="station-card"><strong>📍 ${s.name}</strong><p>📏 ${s.distance} km</p><p>📞 ${s.phone}</p><button class="nav-btn" onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=${s.lat},${s.lon}')">Navigate</button></div>`; });
+                    custom.data.forEach(s => { html += `<div class="station-card"><strong>📍 ${s.name}</strong><p>📏 ${s.distance} km</p><p>📞 ${s.phone}</p><button class="nav-btn" onclick="window.open('https://www.google.com/maps/search/?api=1&query=${s.lat},${s.lon}')">Navigate</button></div>`; });
                     appendMessage("bot", html + '</div>');
                 }
                 if (custom && custom.type === "complaint_draft") {
                     const d = custom.data;
-                    const previewText = `To,\n${d.to}\n\nSubject: ${d.subject}\n\n${d.body}`;
-                    const mailtoLink = `https://mail.google.com/mail/?view=cm&fs=1&to=&su=${encodeURIComponent(d.subject)}&body=${encodeURIComponent("To,\n" + d.to + "\n\n" + d.body)}`;
+                    const previewText = d.body;
+                    const mailtoLink = `https://mail.google.com/mail/?view=cm&fs=1&to=&su=${encodeURIComponent(d.subject)}&body=${encodeURIComponent(d.body)}`;
                     appendMessage("bot", `<div class="complaint-preview"><p><strong>Formal Draft Preview:</strong></p><pre>${previewText}</pre><button class="nav-btn" onclick="window.open('${mailtoLink}', '_blank')">📧 Open in Gmail</button></div>`);
                 }
             });
@@ -63,6 +75,5 @@
     }
     function handleKeyPress(e) { if (e.key === 'Enter') sendMessage(); }
   </script>
-  {% include 'footer.html' %}
 </body>
 </html>

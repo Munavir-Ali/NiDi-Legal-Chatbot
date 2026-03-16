@@ -13,6 +13,7 @@ from functools import lru_cache
 from pymongo import MongoClient
 from math import radians, cos, sin, asin, sqrt
 from deep_translator import GoogleTranslator
+from langdetect import detect
 
 load_dotenv()
 
@@ -167,26 +168,33 @@ def generate_complaint():
 @app.route("/rasa_proxy", methods=["POST"])
 def rasa_proxy():
     user_data = request.json
-    user_text = user_data.get("message", "")
+    user_text = user_data.get("message", "").strip()
 
     try:
-        translator_to_en = GoogleTranslator(source='auto', target='en')
-        translated_to_en = translator_to_en.translate(user_text)
+        detected_lang = detect(user_text)
 
-        detected_lang = translator_to_en.target_track if hasattr(translator_to_en, 'target_track') else 'en'
-        is_not_english = translated_to_en.lower() != user_text.lower()
+        target_langs = ['hi', 'ml']
 
-        user_data['message'] = translated_to_en
+        is_legal_query = any(keyword in user_text.upper() for keyword in ["IPC", "BNS", "SECTION", "ARTICLE", "⚖️"])
+        is_short = len(user_text.split()) < 3
+
+        should_translate = detected_lang in target_langs and (not is_short or is_legal_query)
+
+        if should_translate:
+            user_data['message'] = GoogleTranslator(source=detected_lang, target='en').translate(user_text)
+
         rasa_response = requests.post("http://127.0.0.1:5005/webhooks/rest/webhook", json=user_data, timeout=60).json()
 
-        if is_not_english:
+        if should_translate:
+            back_translator = GoogleTranslator(source='en', target=detected_lang)
             for res in rasa_response:
                 if 'text' in res:
-                    res['text'] = GoogleTranslator(source='en', target='auto').translate(res['text'])
+                    res['text'] = back_translator.translate(res['text'])
 
         return jsonify(rasa_response)
-    except Exception as e:
-        return jsonify([{"text": f"Service Error: {str(e)}"}]), 500
+    except:
+        rasa_response = requests.post("http://127.0.0.1:5005/webhooks/rest/webhook", json=user_data, timeout=60).json()
+        return jsonify(rasa_response)
 
 @app.route("/logout")
 def logout():
@@ -195,7 +203,6 @@ def logout():
 
 @app.route("/locator")
 def locator():
-    """Renders the emergency police station locator page."""
     if "user" not in session:
         return redirect(url_for("signup_view"))
     return render_template("locator.html")

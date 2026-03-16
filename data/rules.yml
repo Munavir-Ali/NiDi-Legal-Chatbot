@@ -21,18 +21,7 @@ rules:
       - intent: bot_challenge
       - action: utter_iamabot
 
-  - rule: Activate Complaint Form
+  - rule: Start dynamic legal complaint conversation
     steps:
        - intent: request_complaint
-       - action: complaint_form
-       - active_loop: complaint_form
-
-  - rule: Submit Complaint Form
-    condition:
-       - active_loop: complaint_form
-    steps:
-       - action: complaint_form
-       - active_loop: null
-       - slot_was_set:
-         - requested_slot: null
        - action: action_prepare_complaint

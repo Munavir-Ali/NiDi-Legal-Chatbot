@@ -37,32 +37,19 @@ slots:
     type: text
     influence_conversation: false
     mappings:
-      - type: from_entity
-        entity: incident_type
       - type: from_text
-        conditions:
-          - active_loop: complaint_form
-            requested_slot: incident_type
 
   incident_details:
     type: text
     influence_conversation: false
     mappings:
       - type: from_text
-        conditions:
-          - active_loop: complaint_form
-            requested_slot: incident_details
 
   incident_location:
     type: text
     influence_conversation: false
     mappings:
-      - type: from_entity
-        entity: incident_location
       - type: from_text
-        conditions:
-          - active_loop: complaint_form
-            requested_slot: incident_location
 
 responses:
   utter_happy:
@@ -76,7 +63,7 @@ responses:
     - text: "Did that help you?"
 
   utter_greet:
-    - text: "Hello! I am NiDi. Which Section or Article can I help you with today?"
+    - text: "Hello! I am NiDi. How can I assist you with legal matters today?"
 
   utter_ask_legal_section:
     - text: "I've noted you are asking about a legal provision. Let me fetch that for you."
@@ -85,35 +72,13 @@ responses:
     - text: "Goodbye! Stay legally informed."
 
   utter_iamabot:
-    - text: "I am NiDi, a legal information bot. I can help you find and understand legal sections and articles."
-
-  utter_ask_incident_type:
-    - text: "I can help with that. What is the nature of the incident? (e.g., Theft, Harassment, Accident)"
-
-  utter_ask_incident_details:
-    - text: "Please provide a brief description of what happened."
-
-  utter_ask_incident_location:
-    - text: "Where did this occur? (Provide a landmark or area)"
-
-  utter_submit_complaint:
-    - text: "All set! Your draft is ready. Click the button below to open it in your mail app."
-
-
+    - text: "I am NiDi, a legal information bot. I can help you find laws, find police stations, or draft complaints."
 
 actions:
   - action_get_legal_description
   - action_find_nearby_police
   - action_prepare_complaint
-  - validate_complaint_form
-
-forms:
-  complaint_form:
-    required_slots:
-      - incident_type
-      - incident_details
-      - incident_location
 
 session_config:
-  session_expiration_time: 60
-  carry_over_slots_to_new_session: true
+  session_expiration_time: 5
+  carry_over_slots_to_new_session: false
