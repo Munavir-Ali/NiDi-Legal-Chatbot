@@ -1,12 +1,18 @@
-from typing import Any, Text, Dict, List
-from rasa_sdk import Action, Tracker
-from rasa_sdk.executor import CollectingDispatcher
-from rasa_sdk.forms import ValidationAction
-import pandas as pd
 import os
 import re
 import requests
+import pandas as pd
+from typing import Any, Text, Dict, List
 from math import radians, cos, sin, asin, sqrt
+from rasa_sdk import Action, Tracker
+from rasa_sdk.executor import CollectingDispatcher
+from rasa_sdk.forms import ValidationAction
+from groq import Groq
+from dotenv import load_dotenv
+
+load_dotenv()
+
+client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
 def haversine(lat1, lon1, lat2, lon2):
     lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
@@ -104,17 +110,26 @@ class ActionGetLegalDescription(Action):
 
         if not matches:
             dispatcher.utter_message(text=f"No details found for {legal_section_raw}.")
-        elif len(matches) == 1:
-            dispatcher.utter_message(
-                text=f"⚖️ **{matches[0]['label']} - {display_section}**:\n\n{matches[0]['text']}")
         else:
-            options = ", ".join([m['label'] for m in matches])
-            dispatcher.utter_message(
-                text=f"I found Section {clean_query} in multiple acts: {options}. Which one did you mean?")
-            dispatcher.utter_message(text=f"Displaying **{matches[0]['label']}** result:\n\n{matches[0]['text']}")
+            final_match = matches[0]
+            raw_text = final_match['text']
+            act_label = final_match['label']
+
+            try:
+                completion = client.chat.completions.create(
+                    model="llama-3.3-70b-versatile",
+                    messages=[
+                        {"role": "system", "content": "You are NiDi, a helpful legal assistant. Explain legal provisions in very simple, easy-to-understand terms for common citizens. Keep it concise but helpful."},
+                        {"role": "user", "content": f"Explain {act_label} Section/Article {display_section} simply based on this text: {raw_text}"}
+                    ]
+                )
+                ai_explanation = completion.choices[0].message.content
+                dispatcher.utter_message(text=f"⚖️ **{act_label} - {display_section}**\n\n{ai_explanation}")
+            except Exception as e:
+                dispatcher.utter_message(text=f"⚖️ **{act_label} - {display_section}**:\n\n{raw_text}")
+                print(f"Groq API Error: {e}")
 
         return []
-
 
 class ActionFindNearbyPolice(Action):
     def name(self) -> Text:
@@ -192,12 +207,10 @@ class ActionPrepareComplaint(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        # Get the data the bot collected from the user
         incident = tracker.get_slot("incident_type") or "incident"
         details = tracker.get_slot("incident_details") or "No details provided"
         location = tracker.get_slot("incident_location") or "the specified area"
 
-        # Construct the professional strings the JS is looking for
         to_field = f"Station House Officer,\nPolice Station, {location}"
         subject_field = f"Formal Complaint regarding {incident}"
         body_field = (
@@ -206,7 +219,6 @@ class ActionPrepareComplaint(Action):
             f"I request you to kindly investigate this matter and take appropriate action."
         )
 
-        # Dispatch with the EXACT keys 'to', 'subject', and 'body'
         dispatcher.utter_message(
             text=f"I have generated your draft for {incident}.",
             json_message={
@@ -235,3 +247,15 @@ class ValidateComplaintForm(ValidationAction):
             dispatcher.utter_message(text="Please provide a more detailed description so the draft is accurate.")
             return {"incident_details": None}
         return {"incident_details": slot_value}
+
+if __name__ == "__main__":
+    test_completion = client.chat.completions.create(
+        model="llama-3.3-70b-versatile",
+        messages=[
+            {
+                "role": "user",
+                "content": "Explain why fast inference is critical for reasoning models"
+            }
+        ]
+    )
+    print(test_completion.choices[0].message.content)

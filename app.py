@@ -12,14 +12,12 @@ from dotenv import load_dotenv
 from functools import lru_cache
 from pymongo import MongoClient
 from math import radians, cos, sin, asin, sqrt
-from googletrans import Translator
+from deep_translator import GoogleTranslator
 
 load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "dev-fallback-key")
-
-translator = Translator()
 
 GOOGLE_DISCOVERY_URL = "https://accounts.google.com/.well-known/openid-configuration"
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
@@ -165,20 +163,30 @@ def generate_complaint():
     mailto_link = f"mailto:{recipient}?subject={urllib.parse.quote(subject)}&body={urllib.parse.quote(body)}"
     return jsonify({"mailto_link": mailto_link, "preview": body})
 
+
 @app.route("/rasa_proxy", methods=["POST"])
 def rasa_proxy():
     user_data = request.json
     user_text = user_data.get("message", "")
+
     try:
-        detection = translator.detect(user_text)
-        user_lang = detection.lang
-        if user_lang != 'en': user_data['message'] = translator.translate(user_text, dest='en').text
+        translator_to_en = GoogleTranslator(source='auto', target='en')
+        translated_to_en = translator_to_en.translate(user_text)
+
+        detected_lang = translator_to_en.target_track if hasattr(translator_to_en, 'target_track') else 'en'
+        is_not_english = translated_to_en.lower() != user_text.lower()
+
+        user_data['message'] = translated_to_en
         rasa_response = requests.post("http://127.0.0.1:5005/webhooks/rest/webhook", json=user_data, timeout=60).json()
-        if user_lang != 'en':
+
+        if is_not_english:
             for res in rasa_response:
-                if 'text' in res: res['text'] = translator.translate(res['text'], dest=user_lang).text
+                if 'text' in res:
+                    res['text'] = GoogleTranslator(source='en', target='auto').translate(res['text'])
+
         return jsonify(rasa_response)
-    except Exception as e: return jsonify([{"text": f"Error: {str(e)}"}]), 500
+    except Exception as e:
+        return jsonify([{"text": f"Service Error: {str(e)}"}]), 500
 
 @app.route("/logout")
 def logout():
