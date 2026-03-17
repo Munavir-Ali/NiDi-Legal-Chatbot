@@ -19,6 +19,19 @@
     </div>
   </main>
   <script>
+    function openGmail(subject, body) {
+        const url = `https://mail.google.com/mail/?view=cm&fs=1&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        window.open(url, '_blank');
+    }
+
+    function copyToClipboard(text, btn) {
+        navigator.clipboard.writeText(text).then(() => {
+            const originalText = btn.innerText;
+            btn.innerText = "Copied! ✅";
+            setTimeout(() => { btn.innerText = originalText; }, 2000);
+        });
+    }
+
     window.onload = async function() {
         try {
             await fetch('/rasa_proxy', {
@@ -77,7 +90,6 @@
                 if (custom && custom.type === "station_list") {
                     let html = '<div class="station-list-container">';
                     custom.data.forEach(s => {
-                        // FIXED: Corrected the quotes and variables here
                         html += `<div class="station-card">
                                     <strong>📍 ${s.name}</strong>
                                     <p>📏 ${s.distance} km</p>
@@ -90,19 +102,19 @@
 
                 if (custom && custom.type === "complaint_draft") {
                     const d = custom.data;
-                    const encodedSubject = encodeURIComponent(d.subject);
-                    const encodedBody = encodeURIComponent(d.body);
-                    const gmailLink = `https://mail.google.com/mail/?view=cm&fs=1&to=&su=${encodedSubject}&body=${encodedBody}`;
+                    const safeSubject = d.subject.replace(/'/g, "\\'");
+                    const safeBody = d.body.replace(/'/g, "\\'").replace(/\n/g, "\\n");
 
-                    // FIXED: Used a cleaner template string to prevent button "unresponsiveness"
-                    const draftHtml = `
+                    appendMessage("bot", `
                         <div class="complaint-preview">
                             <p><strong>Formal Draft Preview:</strong></p>
-                            <pre style="white-space: pre-wrap; font-family: sans-serif; font-size: 0.9em; background: #f9f9f9; padding: 10px; border-radius: 5px; max-height: 300px; overflow-y: auto;">${d.body}</pre>
-                            <button class="nav-btn" onclick="window.open('${gmailLink}', '_blank')">📧 Open in Gmail</button>
+                            <pre id="draft-text" style="white-space: pre-wrap; font-family: sans-serif; font-size: 0.9em; background: #f4f4f4; padding: 15px; border-radius: 8px; max-height: 250px; overflow-y: auto; border: 1px solid #ddd;">${d.body}</pre>
+                            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                                <button class="nav-btn" style="flex: 1;" onclick="openGmail('${safeSubject}', '${safeBody}')">📧 Open in Gmail</button>
+                                <button class="nav-btn" style="flex: 1; background: #666;" onclick="copyToClipboard(\`${d.body.replace(/`/g, "\\`")}\`, this)">📋 Copy Text</button>
+                            </div>
                         </div>
-                    `;
-                    appendMessage("bot", draftHtml);
+                    `);
                 }
             });
         } catch (e) {
