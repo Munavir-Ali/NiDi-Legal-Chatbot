@@ -170,19 +170,20 @@ def rasa_proxy():
     user_data = request.json
     user_text = user_data.get("message", "").strip()
 
+    # Capture metadata if it exists
+    metadata = user_data.get("metadata", {})
+
     try:
         detected_lang = detect(user_text)
-
         target_langs = ['hi', 'ml']
-
         is_legal_query = any(keyword in user_text.upper() for keyword in ["IPC", "BNS", "SECTION", "ARTICLE", "⚖️"])
         is_short = len(user_text.split()) < 3
-
         should_translate = detected_lang in target_langs and (not is_short or is_legal_query)
 
         if should_translate:
             user_data['message'] = GoogleTranslator(source=detected_lang, target='en').translate(user_text)
 
+        # Ensure user_data (which now contains metadata from the frontend) is sent
         rasa_response = requests.post("http://127.0.0.1:5005/webhooks/rest/webhook", json=user_data, timeout=60).json()
 
         if should_translate:

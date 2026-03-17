@@ -185,19 +185,15 @@ class ActionFindNearbyPolice(Action):
         return "action_find_nearby_police"
 
     def run(self, dispatcher, tracker, domain):
-        metadata = tracker.get_slot("session_metadata") or {}
+        # Look specifically in the metadata passed by the proxy
+        metadata = tracker.latest_message.get("metadata", {})
         location = metadata.get("location")
 
         if not location:
-            events = tracker.current_state().get("events", [])
-            for e in reversed(events):
-                if e.get("event") == "user":
-                    metadata = e.get("metadata", {})
-                    location = metadata.get("location")
-                    break
+            location = tracker.get_slot("session_metadata")
 
-        if not location:
-            dispatcher.utter_message(text="I need your location permission to find the nearest station.")
+        if not location or not location.get('lat'):
+            dispatcher.utter_message(text="I need your location permission to find the nearest station. Please ensure GPS is enabled.")
             return []
 
         lat, lon = float(location['lat']), float(location['lon'])

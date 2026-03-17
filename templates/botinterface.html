@@ -48,30 +48,66 @@
         const needsLoc = /police|station|help|emergency|പോലീസ്|സ്റ്റേഷൻ|पुलिस|थाना/i.test(message);
         if (needsLoc && navigator.geolocation) {
             appendMessage("bot", "Accessing location... 📡");
-            navigator.geolocation.getCurrentPosition(pos => sendToRasa(message, { lat: pos.coords.latitude, lon: pos.coords.longitude }), () => sendToRasa(message, null));
-        } else { sendToRasa(message, null); }
+            navigator.geolocation.getCurrentPosition(
+                pos => sendToRasa(message, { lat: pos.coords.latitude, lon: pos.coords.longitude }),
+                () => sendToRasa(message, null),
+                { timeout: 10000 }
+            );
+        } else {
+            sendToRasa(message, null);
+        }
     }
 
     async function sendToRasa(message, coords) {
         try {
-            const response = await fetch('/rasa_proxy', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sender: "user", message: message, metadata: { session_metadata: { location: coords } } }) });
+            const response = await fetch('/rasa_proxy', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    sender: "user",
+                    message: message,
+                    metadata: { location: coords }
+                })
+            });
             const data = await response.json();
             data.forEach(res => {
                 if (res.text) appendMessage("bot", res.text);
                 const custom = res.custom || res.json_message;
+
                 if (custom && custom.type === "station_list") {
                     let html = '<div class="station-list-container">';
-                    custom.data.forEach(s => { html += `<div class="station-card"><strong>📍 ${s.name}</strong><p>📏 ${s.distance} km</p><p>📞 ${s.phone}</p><button class="nav-btn" onclick="window.open('https://www.google.com/maps/search/?api=1&query=${s.lat},${s.lon}')">Navigate</button></div>`; });
+                    custom.data.forEach(s => {
+                        // FIXED: Corrected the quotes and variables here
+                        html += `<div class="station-card">
+                                    <strong>📍 ${s.name}</strong>
+                                    <p>📏 ${s.distance} km</p>
+                                    <p>📞 ${s.phone}</p>
+                                    <button class="nav-btn" onclick="window.open('https://www.google.com/maps/search/?api=1&query=${s.lat},${s.lon}', '_blank')">Navigate</button>
+                                 </div>`;
+                    });
                     appendMessage("bot", html + '</div>');
                 }
+
                 if (custom && custom.type === "complaint_draft") {
                     const d = custom.data;
-                    const previewText = d.body;
-                    const mailtoLink = `https://mail.google.com/mail/?view=cm&fs=1&to=&su=${encodeURIComponent(d.subject)}&body=${encodeURIComponent(d.body)}`;
-                    appendMessage("bot", `<div class="complaint-preview"><p><strong>Formal Draft Preview:</strong></p><pre>${previewText}</pre><button class="nav-btn" onclick="window.open('${mailtoLink}', '_blank')">📧 Open in Gmail</button></div>`);
+                    const encodedSubject = encodeURIComponent(d.subject);
+                    const encodedBody = encodeURIComponent(d.body);
+                    const gmailLink = `https://mail.google.com/mail/?view=cm&fs=1&to=&su=${encodedSubject}&body=${encodedBody}`;
+
+                    // FIXED: Used a cleaner template string to prevent button "unresponsiveness"
+                    const draftHtml = `
+                        <div class="complaint-preview">
+                            <p><strong>Formal Draft Preview:</strong></p>
+                            <pre style="white-space: pre-wrap; font-family: sans-serif; font-size: 0.9em; background: #f9f9f9; padding: 10px; border-radius: 5px; max-height: 300px; overflow-y: auto;">${d.body}</pre>
+                            <button class="nav-btn" onclick="window.open('${gmailLink}', '_blank')">📧 Open in Gmail</button>
+                        </div>
+                    `;
+                    appendMessage("bot", draftHtml);
                 }
             });
-        } catch (e) { appendMessage("bot", "Connection error."); }
+        } catch (e) {
+            appendMessage("bot", "Connection error.");
+        }
     }
     function handleKeyPress(e) { if (e.key === 'Enter') sendMessage(); }
   </script>
