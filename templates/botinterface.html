@@ -14,11 +14,68 @@
       <div class="message-row left"><div class="message">Hello! I am NiDi. How can I assist you with legal matters today?</div></div>
     </div>
     <div class="chat-input">
-      <input type="text" id="user-input" placeholder="Type message/സന്ദേശം നൽകുക/अपना संदेश टाइप करें..." onkeypress="handleKeyPress(event)" />
-      <button onclick="sendMessage()">➤</button>
+      <input type="text" id="user-input" placeholder="Type message..." onkeypress="handleKeyPress(event)" />
+      <button class="send-btn" onclick="sendMessage()">➤</button>
+      <div class="action-capsule">
+        <select id="speech-lang" class="capsule-left">
+          <option value="en-IN">EN</option>
+          <option value="ml-IN">ML</option>
+          <option value="hi-IN">HI</option>
+        </select>
+        <button id="mic-btn" class="capsule-right" onclick="toggleVoice()">
+          <svg id="mic-svg" viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+            <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+            <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+          </svg>
+        </button>
+      </div>
     </div>
   </main>
   <script>
+    let recognition;
+    let isListening = false;
+
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SpeechRecognition();
+        recognition.continuous = false;
+        recognition.interimResults = false;
+
+        recognition.onresult = (event) => {
+            const transcript = event.results[0][0].transcript;
+            document.getElementById('user-input').value = transcript;
+            stopListeningUI();
+            sendMessage();
+        };
+
+        recognition.onend = () => { stopListeningUI(); };
+        recognition.onerror = () => { stopListeningUI(); };
+    }
+
+    function toggleVoice() {
+        if (!recognition) {
+            alert("Voice recognition not supported.");
+            return;
+        }
+        if (isListening) {
+            recognition.stop();
+        } else {
+            recognition.lang = document.getElementById('speech-lang').value;
+            recognition.start();
+            startListeningUI();
+        }
+    }
+
+    function startListeningUI() {
+        isListening = true;
+        document.querySelector('.action-capsule').classList.add('recording');
+    }
+
+    function stopListeningUI() {
+        isListening = false;
+        document.querySelector('.action-capsule').classList.remove('recording');
+    }
+
     function openGmail(subject, body) {
         const url = `https://mail.google.com/mail/?view=cm&fs=1&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
         window.open(url, '_blank');
@@ -39,9 +96,7 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ sender: "user", message: "/restart" })
             });
-        } catch (e) {
-            console.log("Restart failed");
-        }
+        } catch (e) { console.log("Restart failed"); }
     };
 
     function appendMessage(role, content) {
@@ -66,9 +121,7 @@
                 () => sendToRasa(message, null),
                 { timeout: 10000 }
             );
-        } else {
-            sendToRasa(message, null);
-        }
+        } else { sendToRasa(message, null); }
     }
 
     async function sendToRasa(message, coords) {
@@ -86,7 +139,6 @@
             data.forEach(res => {
                 if (res.text) appendMessage("bot", res.text);
                 const custom = res.custom || res.json_message;
-
                 if (custom && custom.type === "station_list") {
                     let html = '<div class="station-list-container">';
                     custom.data.forEach(s => {
@@ -99,16 +151,14 @@
                     });
                     appendMessage("bot", html + '</div>');
                 }
-
                 if (custom && custom.type === "complaint_draft") {
                     const d = custom.data;
                     const safeSubject = d.subject.replace(/'/g, "\\'");
                     const safeBody = d.body.replace(/'/g, "\\'").replace(/\n/g, "\\n");
-
                     appendMessage("bot", `
                         <div class="complaint-preview">
                             <p><strong>Formal Draft Preview:</strong></p>
-                            <pre id="draft-text" style="white-space: pre-wrap; font-family: sans-serif; font-size: 0.9em; background: #f4f4f4; padding: 15px; border-radius: 8px; max-height: 250px; overflow-y: auto; border: 1px solid #ddd;">${d.body}</pre>
+                            <pre id="draft-text">${d.body}</pre>
                             <div style="display: flex; gap: 10px; margin-top: 10px;">
                                 <button class="nav-btn" style="flex: 1;" onclick="openGmail('${safeSubject}', '${safeBody}')">📧 Open in Gmail</button>
                                 <button class="nav-btn" style="flex: 1; background: #666;" onclick="copyToClipboard(\`${d.body.replace(/`/g, "\\`")}\`, this)">📋 Copy Text</button>
@@ -117,9 +167,7 @@
                     `);
                 }
             });
-        } catch (e) {
-            appendMessage("bot", "Connection error.");
-        }
+        } catch (e) { appendMessage("bot", "Connection error."); }
     }
     function handleKeyPress(e) { if (e.key === 'Enter') sendMessage(); }
   </script>

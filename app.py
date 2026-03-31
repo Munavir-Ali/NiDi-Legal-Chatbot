@@ -1,19 +1,4 @@
-import glob
-from flask import Flask, render_template, redirect, request, session, url_for, jsonify
-import requests
-import os
-import urllib.parse
-import pandas as pd
-import json
-from bson.json_util import dumps
-import plotly.graph_objects as go
-import plotly.utils
-from dotenv import load_dotenv
-from functools import lru_cache
-from pymongo import MongoClient
-from math import radians, cos, sin, asin, sqrt
-from deep_translator import GoogleTranslator
-from langdetect import detect
+cd 
 
 load_dotenv()
 
@@ -207,6 +192,14 @@ def locator():
     if "user" not in session:
         return redirect(url_for("signup_view"))
     return render_template("locator.html")
+
+@app.route('/privacy')
+def privacy():
+    return render_template('privacy.html')
+
+@app.route('/disclaimer')
+def disclaimer():
+    return render_template('disclaimer.html')
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000, use_reloader=False)
