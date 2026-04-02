@@ -1,5 +1,5 @@
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Segoe UI", Tahoma, sans-serif; }
-body { background: #DAFFFB; color: #001C30; }
+body { background: #DAFFFB; color: #001C30; height: 100%; }
 
 .navbar { background: #001C30; padding: 14px 0; position: sticky; top: 0; z-index: 2000; }
 .nav-container { width: 90%; max-width: 1200px; margin: auto; display: flex; justify-content: space-between; align-items: center; }

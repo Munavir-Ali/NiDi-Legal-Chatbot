@@ -1,4 +1,3 @@
-/* disclaimer.css */
 * {
   margin: 0;
   padding: 0;
@@ -6,18 +5,53 @@
   font-family: "Segoe UI", Tahoma, sans-serif;
 }
 
+html, body {
+  height: 100%;
+}
+
 body {
   background: #DAFFFB;
   color: #001C30;
+  display: flex;
+  flex-direction: column;
+}
+
+.navbar {
+  background: #001C30;
+  padding: 14px 0;
+  flex-shrink: 0;
+}
+
+.nav-container {
+  width: 90%;
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  color: #64CCC5;
+  font-weight: 600;
+  font-size: 18px;
+  text-decoration: none;
+}
+
+.nav-links a {
+  color: #DAFFFB;
+  text-decoration: none;
+  margin-left: 20px;
 }
 
 .main-content {
+  flex: 1;
   max-width: 900px;
   margin: auto;
   padding: 20px;
+  width: 100%;
 }
 
-/* HERO */
 .hero-section {
   text-align: center;
   padding: 50px 20px;
@@ -30,11 +64,10 @@ body {
 }
 
 .hero-section p {
-  color: #176B87;
+  color: #001C30;
   font-size: 16px;
 }
 
-/* WARNING CARD */
 .disclaimer-wrapper {
   margin-bottom: 50px;
 }
@@ -44,7 +77,7 @@ body {
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-  border-top: 6px solid #e63946; /* Emergency Red Accent */
+  border-top: 6px solid #e63946;
 }
 
 .warning-header {
@@ -97,7 +130,6 @@ body {
   line-height: 1;
 }
 
-/* HIGHLIGHT BOX */
 .highlight-box {
   background: #DAFFFB;
   padding: 20px;
@@ -114,13 +146,50 @@ body {
   color: #176B87;
 }
 
-/* RESPONSIVE */
+.footer {
+  background: #001C30;
+  border-top: 2px solid #64CCC5;
+  height: 64px;
+  flex-shrink: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-container {
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 16px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer-text {
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0;
+  text-align: center;
+}
+
 @media (max-width: 768px) {
   .hero-section h1 {
     font-size: 26px;
   }
-  
   .warning-body {
     padding: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .footer {
+    height: auto;
+    padding: 16px 0;
+  }
+  .footer-text {
+    font-size: 12px;
   }
 }

@@ -24,10 +24,13 @@ GOOGLE_DISCOVERY_URL = "https://accounts.google.com/.well-known/openid-configura
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
 
-MONGO_URI = os.getenv("MONGO_URI")
+MONGO_URI_RAW = os.getenv("MONGO_URI")
+MONGO_PASS = os.getenv("MONGO_PASS")
+escaped_pass = urllib.parse.quote_plus(MONGO_PASS) if MONGO_PASS else ""
+FINAL_MONGO_URI = MONGO_URI_RAW.replace("<PASSWORD>", escaped_pass) if "<PASSWORD>" in (MONGO_URI_RAW or "") else MONGO_URI_RAW
 
 try:
-    client = MongoClient(MONGO_URI, tls=True, tlsAllowInvalidCertificates=True, serverSelectionTimeoutMS=5000)
+    client = MongoClient(FINAL_MONGO_URI, tls=True, tlsAllowInvalidCertificates=True, serverSelectionTimeoutMS=5000)
     db = client["NiDi_DB"]
     client.admin.command('ping')
     print("✅ Connected to MongoDB successfully!")
