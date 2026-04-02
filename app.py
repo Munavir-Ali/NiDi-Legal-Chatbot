@@ -1,4 +1,19 @@
-cd 
+#import glob
+from flask import Flask, render_template, redirect, request, session, url_for, jsonify
+import requests
+import os
+import urllib.parse
+import pandas as pd
+import json
+from bson.json_util import dumps
+import plotly.graph_objects as go
+import plotly.utils
+from dotenv import load_dotenv
+from functools import lru_cache
+from pymongo import MongoClient
+from math import radians, cos, sin, asin, sqrt
+from deep_translator import GoogleTranslator
+from langdetect import detect
 
 load_dotenv()
 
@@ -9,9 +24,7 @@ GOOGLE_DISCOVERY_URL = "https://accounts.google.com/.well-known/openid-configura
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
 
-MONGO_PASSWORD = "nidi@2022-2026"
-ENCODED_PASSWORD = urllib.parse.quote_plus(MONGO_PASSWORD)
-MONGO_URI = f"mongodb+srv://nidi_user0:{ENCODED_PASSWORD}@nidi.qkiysav.mongodb.net/?appName=NiDi"
+MONGO_URI = os.getenv("MONGO_URI")
 
 try:
     client = MongoClient(MONGO_URI, tls=True, tlsAllowInvalidCertificates=True, serverSelectionTimeoutMS=5000)
@@ -189,8 +202,6 @@ def logout():
 
 @app.route("/locator")
 def locator():
-    if "user" not in session:
-        return redirect(url_for("signup_view"))
     return render_template("locator.html")
 
 @app.route('/privacy')
